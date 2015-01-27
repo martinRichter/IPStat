@@ -1,0 +1,42 @@
+public class T2 implements Runnable {
+	Thread t = new Thread(this);
+	private boolean alive = true;
+	private boolean active = true;
+
+	public T2() {
+		System.out.println("Creating and starting thread 2");
+		t.start();
+	}
+
+	public void run() {
+		while (alive) {
+			while(active){
+			System.out.println("Thread 2");
+			try {
+				Thread.sleep(1000);
+			} catch (InterruptedException e) {
+				e.printStackTrace();
+			}
+			try {
+				Thread.sleep(25);
+			} catch (InterruptedException ie) {
+			}
+		}
+	}
+
+	public void kill() {
+		alive = false;
+	}
+
+	public void wake() {
+		alive = true;
+	}
+	
+	public void pause() {
+		active = false;
+	}
+	
+	public void unPause(){
+		active = true;
+	}
+}

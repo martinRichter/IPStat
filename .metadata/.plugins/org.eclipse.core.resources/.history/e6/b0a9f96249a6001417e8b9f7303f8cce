@@ -1,0 +1,45 @@
+public class T1 extends Thread {
+	private boolean alive = true;
+	private boolean active = true;
+
+	public T1() {
+		System.out.println("Creating and starting thread 1");
+		start();
+	}
+
+	public void run() {
+		while (alive) {
+			while (active) {
+				System.out.println("Thread 1");
+				try {
+					Thread.sleep(1000);
+				} catch (InterruptedException e) {
+				}
+			}
+			try {
+				Thread.sleep(25);
+			} catch (InterruptedException ie) {
+			}
+
+		}
+	}
+
+	public void kill() {
+		alive = false;
+		pause();
+	}
+
+	public void wake() {
+		alive = true;
+		unPause();
+	}
+
+	public void pause() {
+		active = false;
+	}
+
+	public void unPause() {
+		active = true;
+	}
+
+}

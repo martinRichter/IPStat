@@ -1,0 +1,21 @@
+
+public class T1 extends Thread{
+	
+	public T1(){
+		start();
+	}
+	
+	public void run(){
+		while (true){
+			System.out.println("T1 kör");
+			try {
+				Thread.sleep(1000);
+			} catch (InterruptedException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+		}
+	}
+	
+
+}

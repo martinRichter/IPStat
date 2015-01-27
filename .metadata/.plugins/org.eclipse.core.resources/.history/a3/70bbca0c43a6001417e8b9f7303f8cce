@@ -1,0 +1,13 @@
+public class T2 implements Runnable {
+	Thread t = new Thread(this);
+
+	public T2(){
+		t.start();
+	}
+	
+	public void run() {
+		while (true) {
+			System.out.println("T2 kör");
+		}
+	}
+}

@@ -1,0 +1,20 @@
+public class T1 extends Thread{
+	private boolean alive = true;
+	
+	public T1(){
+		start();
+	}
+	
+	public void run(){
+		while (alive){
+			System.out.println("T1 kör");
+			try {
+				Thread.sleep(1000);
+			} catch (InterruptedException e) {
+				e.printStackTrace();
+			}
+		}
+	}
+	
+
+}

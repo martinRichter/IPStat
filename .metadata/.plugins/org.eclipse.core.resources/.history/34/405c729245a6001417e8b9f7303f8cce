@@ -1,0 +1,31 @@
+public class ThreadRunner {
+
+	public static void main(String[] args) {
+		
+		T1 t1 = new T1();
+		
+		try {
+			Thread.sleep(5000);
+		} catch (InterruptedException ie) {
+			System.out.println("Sleep error");
+		}
+		T2 t2 = new T2();
+		
+		try {
+			Thread.sleep(5000);
+		} catch (InterruptedException ie) {
+			System.out.println("Sleep error");
+		}
+		
+		t1.kill();
+		
+		try {
+			Thread.sleep(5000);
+		} catch (InterruptedException ie) {
+			System.out.println("Sleep error");
+		}
+		
+		t2.kill();
+	}
+
+}
