@@ -12,6 +12,7 @@ public class T1 extends Thread {
 	public T1() {
 		System.out.println("Creating and starting thread 1");
 		start();
+		//Test comment
 	}
 
 	public void run() {
