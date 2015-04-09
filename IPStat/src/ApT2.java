@@ -1,26 +1,33 @@
+
+import javax.swing.JTextArea;
+
 /**
- * @author Martin
- *	A class representing a thread doing this by extending java.Lang.Thread
+ * @author Martin Another kind of thread for pedagogical reasons. This one
+ *         implementing Runnable.
  */
-public class T1 extends Thread {
+public class ApT2 implements Runnable {
+	Thread t = new Thread(this);
+	private JTextArea textArea;
 	private boolean alive = true;
 	private boolean active = true;
 
 	/**
-	 * Creates a new thread of T1 and runs it.
+	 * Creates a new thread of T2 and runs it.
 	 */
-	public T1() {
-		System.out.println("Creating and starting thread 1");
-		start();
+	public ApT2(JTextArea textArea) {
+		this.textArea = textArea;
+		textArea.append("Creating and starting thread 2\n");
+		t.run();
 	}
 
 	public void run() {
 		while (alive) {
 			while (active) {
-				System.out.println("Thread 1");
+				textArea.append("Thread 2\n");
 				try {
 					Thread.sleep(1000);
 				} catch (InterruptedException e) {
+					e.printStackTrace();
 				}
 			}
 			try {
@@ -40,7 +47,8 @@ public class T1 extends Thread {
 	}
 
 	/**
-	 * Resuscitates the thread and unPauses it so the inner while loop is run as well.
+	 * Resuscitates the thread and unPauses it so the inner while loop is run as
+	 * well.
 	 */
 	public void wake() {
 		alive = true;
@@ -60,5 +68,4 @@ public class T1 extends Thread {
 	public void unPause() {
 		active = true;
 	}
-
 }
