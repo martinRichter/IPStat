@@ -1,4 +1,3 @@
-
 import javax.swing.JTextArea;
 
 /**
@@ -12,11 +11,13 @@ public class ApT2 implements Runnable {
 	private boolean active = true;
 
 	/**
-	 * Creates a new thread of T2 and runs it.
+	 * Creates a new thread of ApT2 and runs it.
 	 */
 	public ApT2(JTextArea textArea) {
 		this.textArea = textArea;
 		textArea.append("Creating and starting thread 2\n");
+		textArea.setCaretPosition(textArea.getText().length());
+		textArea.revalidate();
 		t.run();
 	}
 
@@ -24,6 +25,8 @@ public class ApT2 implements Runnable {
 		while (alive) {
 			while (active) {
 				textArea.append("Thread 2\n");
+				textArea.setCaretPosition(textArea.getText().length());
+				textArea.revalidate();
 				try {
 					Thread.sleep(1000);
 				} catch (InterruptedException e) {

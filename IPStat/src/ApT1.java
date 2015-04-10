@@ -10,31 +10,34 @@ public class ApT1 extends Thread {
 	private boolean active = true;
 
 	/**
-	 * Creates a new thread of T1 and runs it.
+	 * Creates a new thread of ApT1 and runs it.
 	 */
 	public ApT1(JTextArea textArea) {
 		this.textArea = textArea;
 		textArea.append("Creating and starting thread 1\n");
+		textArea.setCaretPosition(textArea.getText().length());
+		textArea.revalidate();
 		run();
 	}
 
 	public void run() {
-		textArea.append("Thread 1\n");
-//		while (alive) {
-//			while (active) {
-//				textArea.append("Thread 1\n");
-//				try {
-//					Thread.sleep(1000);
-//				} catch (InterruptedException e) {
-//					System.out.println("Sleep didn't work in ApT1");
-//				}
-//			}
-//			try {
-//				Thread.sleep(25);
-//			} catch (InterruptedException ie) {
-//			}
-//
-//		}
+		while (alive) {
+			while (active) {
+				textArea.append("Thread 1\n");
+				textArea.setCaretPosition(textArea.getText().length());
+				textArea.revalidate();
+				try {
+					Thread.sleep(1000);
+				} catch (InterruptedException e) {
+					e.printStackTrace();
+				}
+			}
+			try {
+				Thread.sleep(25);
+			} catch (InterruptedException ie) {
+			}
+
+		}
 	}
 
 	/**

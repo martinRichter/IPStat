@@ -1,4 +1,3 @@
-
 import javax.swing.*;
 
 import java.applet.*;
@@ -24,33 +23,34 @@ public class AppletTest extends JApplet implements Runnable {
 	}
 
 	public void run() {
-		textArea.append("test\n");
-		//t1 = new ApT1(textArea);
-		// //pause5();
-		//
-		// t2 = new ApT2(textArea);
-		// //pause5();
-		//
-		// t2.pause();
-		// textArea.append("Thread 2 paused\n");
-		// //pause5();
-		//
-		// t2.unPause();
-		// textArea.append("Thread 2 resumed\n");
-		// //pause5();
-		//
-		// t1.kill();
-		// textArea.append("Killed thread 1\n");
-		// //pause5();
-		//
-		// t2.kill();
-		// textArea.append("Killed thread 2\n");
-	}
+		t1 = new ApT1(textArea);
+		pause5();
 
-	// metoden anropas av webbläsaren varje gång webbläsaren kommer tillbaka
-	// till äpplet
-	public void start() {
+		t2 = new ApT2(textArea);
+		pause5();
 
+		t2.pause();
+		textArea.append("Thread 2 paused\n");
+		textArea.setCaretPosition(textArea.getText().length());
+		textArea.revalidate();
+		pause5();
+
+		t2.unPause();
+		textArea.append("Thread 2 resumed\n");
+		textArea.setCaretPosition(textArea.getText().length());
+		textArea.revalidate();
+		pause5();
+
+		t1.kill();
+		textArea.append("Killed thread 1\n");
+		textArea.setCaretPosition(textArea.getText().length());
+		textArea.revalidate();
+		pause5();
+
+		t2.kill();
+		textArea.append("Killed thread 2\n");
+		textArea.setCaretPosition(textArea.getText().length());
+		textArea.revalidate();
 	}
 
 	/**
@@ -62,6 +62,12 @@ public class AppletTest extends JApplet implements Runnable {
 		} catch (InterruptedException ie) {
 			System.out.println("Sleep error");
 		}
+	}
+
+	// metoden anropas av webbläsaren varje gång webbläsaren kommer tillbaka
+	// till äpplet
+	public void start() {
+
 	}
 
 	// metoden anropas av webbläsaren varje gång webbläsaren lämnar äpplet och
