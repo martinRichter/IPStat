@@ -5,70 +5,39 @@ import javax.swing.JTextArea;
  *         implementing Runnable.
  */
 public class ApT2 implements Runnable {
-	Thread t = new Thread(this);
+	private Thread t = new Thread(this);
 	private JTextArea textArea;
-	private boolean alive = true;
-	private boolean active = true;
 
 	/**
-	 * Creates a new thread of ApT2 and runs it.
+	 * Creates a new thread of ApT2.
 	 */
 	public ApT2(JTextArea textArea) {
 		this.textArea = textArea;
-		textArea.append("Creating and starting thread 2\n");
-		textArea.setCaretPosition(textArea.getText().length());
-		textArea.revalidate();
-		t.run();
+	}
+	
+	/**
+	 * Starts the thread.
+	 */
+	public void startT() {
+		t = new Thread(this);
+		t.start();
+	}
+
+	/**
+	 * Stops the thread.
+	 */
+	public void stopT() {
+		t = null;
 	}
 
 	public void run() {
-		while (alive) {
-			while (active) {
-				textArea.append("Thread 2\n");
-				textArea.setCaretPosition(textArea.getText().length());
-				textArea.revalidate();
-				try {
-					Thread.sleep(1000);
-				} catch (InterruptedException e) {
-					e.printStackTrace();
-				}
-			}
+		while (t == Thread.currentThread()) {
+			textArea.append("Thread 2 running\n");
+			textArea.setCaretPosition(textArea.getText().length());
 			try {
-				Thread.sleep(25);
+				t.sleep(1000);
 			} catch (InterruptedException ie) {
 			}
-
 		}
-	}
-
-	/**
-	 * Kills the thread, calls pause() so inner while loop is stopped.
-	 */
-	public void kill() {
-		alive = false;
-		pause();
-	}
-
-	/**
-	 * Resuscitates the thread and unPauses it so the inner while loop is run as
-	 * well.
-	 */
-	public void wake() {
-		alive = true;
-		unPause();
-	}
-
-	/**
-	 * Pauses the thread by stopping the inner while loop.
-	 */
-	public void pause() {
-		active = false;
-	}
-
-	/**
-	 * Resumes the thread by starting the inner while loop.
-	 */
-	public void unPause() {
-		active = true;
 	}
 }

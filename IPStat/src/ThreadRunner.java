@@ -13,7 +13,7 @@ public class ThreadRunner {
 	
 	public static void main(String[] args) {
 		
-		T1 t1 = new T1();
+		T1 t1 = new T1();										
 		pause5();
 		
 		T2 t2 = new T2();
