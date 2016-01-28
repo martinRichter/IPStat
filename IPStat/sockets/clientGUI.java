@@ -7,17 +7,14 @@ import javax.swing.*;
 public class clientGUI extends JFrame {
 	private JTextField textField;
 	private JTextArea textArea;
+	private JScrollPane scroll;
 
 	public clientGUI() {
-		textField = new JTextField(25);
-		textArea = new JTextArea(14, 25);
 
-		initGUI();
-	}
-
-	private void initGUI() {
 		setTitle("Client");
 		setSize(300, 300);
+		textField = new JTextField(25);
+		textArea = new JTextArea(14, 23);
 
 		this.getContentPane().setLayout(new FlowLayout());
 		this.getContentPane().add(textField);
@@ -36,10 +33,16 @@ public class clientGUI extends JFrame {
 		};
 		textField.addActionListener(action);
 
-		//textArea.setLineWrap(true);
-		//textArea.setWrapStyleWord(true);
-		this.getContentPane().add(textArea);
-		
+		textArea.setLineWrap(true);
+		textArea.setWrapStyleWord(true);
+
+		scroll = new JScrollPane(textArea);
+		scroll.setVerticalScrollBarPolicy(JScrollPane.VERTICAL_SCROLLBAR_ALWAYS);
+
+		this.add(scroll);
+		this.setVisible(true);
+		this.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+
 	}
 
 	/**
