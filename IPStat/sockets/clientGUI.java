@@ -5,12 +5,14 @@ import java.awt.event.ActionListener;
 import javax.swing.*;
 
 public class clientGUI extends JFrame {
-	private JTextField textField = new JTextField(25);
-	private JTextArea textArea = new JTextArea(14, 25);
+	private JTextField textField;
+	private JTextArea textArea;
 
 	public clientGUI() {
+		textField = new JTextField(25);
+		textArea = new JTextArea(14, 25);
+
 		initGUI();
-		//waitForText();
 	}
 
 	private void initGUI() {
@@ -27,15 +29,17 @@ public class clientGUI extends JFrame {
 		Action action = new AbstractAction() {
 			@Override
 			public void actionPerformed(ActionEvent e) {
-				//catchInput();
-				displayInput(fetchKeyInput()); //for testing GUI
+				// catchInput();
+				displayInput(fetchKeyInput()); // for testing GUI
 				textField.setText("");
 			}
 		};
 		textField.addActionListener(action);
 
-		textArea.setLineWrap(true);
+		//textArea.setLineWrap(true);
+		//textArea.setWrapStyleWord(true);
 		this.getContentPane().add(textArea);
+		
 	}
 
 	/**
