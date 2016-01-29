@@ -1,9 +1,16 @@
+import java.net.UnknownHostException;
+
 public class startClient {
 
 	public static void main(String[] args) {
 
-		clientGUI client = new clientGUI();
-		client.setVisible(true);
+//		try {
+//			clientGUI GUI = new clientGUI(new Connection());
+//			GUI.setVisible(true);
+//		} catch (UnknownHostException e) {
+//			// TODO Auto-generated catch block
+//			e.printStackTrace();
+//		}
 
 	}
 

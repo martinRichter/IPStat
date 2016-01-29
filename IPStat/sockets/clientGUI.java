@@ -8,9 +8,12 @@ public class clientGUI extends JFrame {
 	private JTextField textField;
 	private JTextArea textArea;
 	private JScrollPane scroll;
+	private Handler handler;
 
-	public clientGUI() {
-
+	public clientGUI(Handler handler) {
+		
+		this.handler = handler;
+		
 		setTitle("Client");
 		setSize(300, 300);
 		textField = new JTextField(25);
@@ -57,6 +60,11 @@ public class clientGUI extends JFrame {
 	private void displayInput(String s) {
 		textArea.append(s + "\n");
 		textArea.validate();
+	}
+	
+	/** Method for setting windows title*/
+	public void setWindowTitle(String s){
+		setTitle(s);
 	}
 
 }
