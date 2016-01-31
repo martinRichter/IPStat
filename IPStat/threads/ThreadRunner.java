@@ -3,7 +3,7 @@ public class ThreadRunner {
 	/**
 	 * Helper method that pauses the thread for 5 seconds
 	 */
-	public static void pause5(){
+	private static void pause5(){
 		try {
 			Thread.sleep(5000);
 		} catch (InterruptedException ie) {

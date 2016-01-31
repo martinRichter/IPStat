@@ -1,39 +1,42 @@
 import java.awt.*;
 import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
 import java.io.PrintWriter;
 
 import javax.swing.*;
 
-public class clientGUI extends JFrame {
+public class clientGUIthread extends JFrame implements Runnable {
 	private JTextField textField;
 	private JTextArea textArea;
 	private JScrollPane scroll;
+	private boolean alive = true;
+	private PrintWriter out;
+	Thread t = new Thread(this);
 
 	/**
-	 * Creates GUI
+	 * Creates GUI and starts running the thread.
 	 */
-	public clientGUI() {
+	public clientGUIthread(PrintWriter out) {
 		createGUI();
+		this.out = out;
+		t.start();
 	}
 
-	
 	/**
 	 * Method for retrieving input to TextField, sends to PrintWriter
 	 */
 	private void sendInput() {
-		// out.print(textField.getText());
+		out.println(textField.getText());
 	}
 
-	/**
-	 * Method for retrieving the input written, used when actionEvent. When
-	 * called, text field is reset as well
-	 */
-	public String retrieveInput() {
-		String str = textField.getText();
-		textField.setText("");
-		return str;
-	}
+//	/**
+//	 * Method for retrieving the input written, used when actionEvent. When
+//	 * called, text field is reset as well
+//	 */
+//	public String retrieveInput() {
+//		String str = textField.getText();
+//		textField.setText("");
+//		return str;
+//	}
 
 	/** Method for displaying input from server in textArea */
 	public void displayInput(String s) {
@@ -45,7 +48,7 @@ public class clientGUI extends JFrame {
 	public void setWindowTitle(String s) {
 		setTitle(s);
 	}
-	
+
 	private void createGUI() {
 		setTitle("Client");
 		setSize(300, 300);
@@ -79,5 +82,15 @@ public class clientGUI extends JFrame {
 		this.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 	}
 
+	@Override
+	public void run() {
+		while (alive) {
+
+		}
+	}
+
+	public void kill() {
+		alive = false;
+	}
 
 }
