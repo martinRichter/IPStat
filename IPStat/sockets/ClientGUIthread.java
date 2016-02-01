@@ -4,7 +4,7 @@ import java.io.PrintWriter;
 
 import javax.swing.*;
 
-public class clientGUIthread extends JFrame implements Runnable {
+public class ClientGUIthread extends JFrame implements Runnable {
 	private JTextField textField;
 	private JTextArea textArea;
 	private JScrollPane scroll;
@@ -15,7 +15,7 @@ public class clientGUIthread extends JFrame implements Runnable {
 	/**
 	 * Creates GUI and starts running the thread.
 	 */
-	public clientGUIthread(PrintWriter out) {
+	public ClientGUIthread(PrintWriter out) {
 		createGUI();
 		this.out = out;
 		t.start();

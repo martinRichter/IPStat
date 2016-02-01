@@ -5,7 +5,7 @@ import java.io.PrintWriter;
 
 import javax.swing.*;
 
-public class clientGUI extends JFrame {
+public class ClientGUI extends JFrame {
 	private JTextField textField;
 	private JTextArea textArea;
 	private JScrollPane scroll;
@@ -13,7 +13,7 @@ public class clientGUI extends JFrame {
 	/**
 	 * Creates GUI
 	 */
-	public clientGUI() {
+	public ClientGUI() {
 		createGUI();
 	}
 

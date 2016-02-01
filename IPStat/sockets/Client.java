@@ -53,7 +53,7 @@ public class Client implements Runnable{
 	
 	@Override
 	public void run() {
-		clientGUIthread GUI = new clientGUIthread (out);
+		ClientGUIthread GUI = new ClientGUIthread (out);
 		ServerConnect connect = new ServerConnect (in);
 		String str;
 		while (true) {
