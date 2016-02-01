@@ -4,21 +4,19 @@ import java.io.PrintWriter;
 
 import javax.swing.*;
 
-public class ClientGUIthread extends JFrame implements Runnable {
+public class ClientGUI extends JFrame {
 	private JTextField textField;
 	private JTextArea textArea;
 	private JScrollPane scroll;
-	private boolean alive = true;
 	private PrintWriter out;
-	Thread t = new Thread(this);
 
 	/**
-	 * Creates GUI and starts running the thread.
+	 * Creates GUI, takes in a PrintWriter.
 	 */
-	public ClientGUIthread(PrintWriter out) {
+	public ClientGUI(PrintWriter out) {
 		createGUI();
 		this.out = out;
-		t.start();
+		;
 	}
 
 	/**
@@ -27,16 +25,6 @@ public class ClientGUIthread extends JFrame implements Runnable {
 	private void sendInput() {
 		out.println(textField.getText());
 	}
-
-//	/**
-//	 * Method for retrieving the input written, used when actionEvent. When
-//	 * called, text field is reset as well
-//	 */
-//	public String retrieveInput() {
-//		String str = textField.getText();
-//		textField.setText("");
-//		return str;
-//	}
 
 	/** Method for displaying input from server in textArea */
 	public void displayInput(String s) {
@@ -81,16 +69,4 @@ public class ClientGUIthread extends JFrame implements Runnable {
 		this.setVisible(true);
 		this.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 	}
-
-	@Override
-	public void run() {
-		while (alive) {
-
-		}
-	}
-
-	public void kill() {
-		alive = false;
-	}
-
 }

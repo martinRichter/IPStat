@@ -8,7 +8,6 @@ public class ServerConnect implements Runnable {
 
 	public ServerConnect(BufferedReader in) {
 		this.in = in;
-
 		t.start();
 	}
 	
@@ -25,9 +24,4 @@ public class ServerConnect implements Runnable {
 	public void kill() {
 		alive = false;
 	}
-	
-	public boolean isAlive() {
-		return alive;
-	}
-
 }

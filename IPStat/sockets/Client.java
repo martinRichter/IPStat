@@ -14,7 +14,7 @@ public class Client implements Runnable {
 	private Socket socket;
 	private PrintWriter out;
 	private BufferedReader in;
-	private ClientGUIthread GUI;
+	private ClientGUI GUI;
 	private ServerConnect connect;
 
 	public Client() throws UnknownHostException {
@@ -35,6 +35,7 @@ public class Client implements Runnable {
 		Initiate();
 	}
 
+	/**Starts the socket connection, if fails, stops the program*/
 	private void Initiate() {
 		try {
 			socket = new Socket(host, port);
@@ -42,21 +43,16 @@ public class Client implements Runnable {
 			closeOnError("Couldn't create socket.");
 		}
 		startIO();
-
 		run();
 	}
 
 	@Override
 	public void run() {
-		GUI = new ClientGUIthread(out);
+		GUI = new ClientGUI(out);
 		connect = new ServerConnect(in);
-		String str;
 		while (true) {
 			try {
-				str = connect.getText();
-				if (str.length() > 0) {
-					GUI.displayInput(str);
-				}
+				GUI.displayInput(connect.getText());
 			} catch (IOException e) {
 				closeOnError("Connection to server lost.");
 			}
@@ -65,10 +61,12 @@ public class Client implements Runnable {
 	}
 
 	/** Method for displaying error message and then close program */
-	private void closeOnError(String s ) {
-		System.out.println(s + "\n" + "Closing connection and software, please restart");
+	private void closeOnError(String s) {
+		System.out.println(s + "\n"
+				+ "Closing connection and software, please restart");
 		try {
-			if(socket!=null)socket.close();
+			if (socket != null)
+				socket.close();
 		} catch (IOException e1) {
 			System.out.println("Couldn't close socket");
 		}
@@ -80,6 +78,9 @@ public class Client implements Runnable {
 		System.exit(0);
 	}
 
+	/**
+	 * Method for creating the BufferedReader and the PrintWriter.
+	 */
 	private void startIO() {
 		try {
 			in = new BufferedReader(new InputStreamReader(
