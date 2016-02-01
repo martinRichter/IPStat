@@ -1,11 +1,11 @@
 import java.net.InetAddress;
 import java.net.UnknownHostException;
 
-
 public class SocketRunner {
 
 	public static void main(String[] args) {
 		try {
+			// Client client = new Client(InetAddress.getByName("atlas.dsv.su.se"), 9494);
 			Client client = new Client();
 		} catch (UnknownHostException e) {
 			// TODO Auto-generated catch block

@@ -38,7 +38,6 @@ public class ClientGUI extends JFrame {
 	}
 
 	private void createGUI() {
-		setTitle("Client");
 		setSize(300, 300);
 		textField = new JTextField(25);
 		textArea = new JTextArea(14, 23);

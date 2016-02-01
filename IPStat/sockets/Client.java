@@ -49,6 +49,7 @@ public class Client implements Runnable {
 	@Override
 	public void run() {
 		GUI = new ClientGUI(out);
+		GUI.setWindowTitle(host.getHostName() + ": " + port);
 		connect = new ServerConnect(in);
 		while (true) {
 			try {
@@ -63,12 +64,12 @@ public class Client implements Runnable {
 	/** Method for displaying error message and then close program */
 	private void closeOnError(String s) {
 		System.out.println(s + "\n"
-				+ "Closing connection and software, please restart");
+				+ "Closing connection and software, please restart.");
 		try {
 			if (socket != null)
 				socket.close();
 		} catch (IOException e1) {
-			System.out.println("Couldn't close socket");
+			System.out.println("Couldn't close socket.");
 		}
 		try {
 			Thread.sleep(2000);
@@ -86,16 +87,16 @@ public class Client implements Runnable {
 			in = new BufferedReader(new InputStreamReader(
 					socket.getInputStream()));
 		} catch (IOException e) {
-			closeOnError("Couldn't create InputReader, IOException");
+			closeOnError("Couldn't create InputReader, IOException.");
 		}
 
 		try {
 			out = new PrintWriter(new OutputStreamWriter(
 					socket.getOutputStream(), "ISO-8859-1"), true);
 		} catch (UnsupportedEncodingException e) {
-			closeOnError("Encoding for PrintWriter not supported");
+			closeOnError("Encoding for PrintWriter not supported.");
 		} catch (IOException e1) {
-			closeOnError("Couldn't create OutPutStream, IOException");
+			closeOnError("Couldn't create OutPutStream, IOException.");
 		}
 	}
 }
