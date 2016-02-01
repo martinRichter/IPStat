@@ -12,13 +12,8 @@ public class ServerConnect implements Runnable {
 		t.start();
 	}
 	
-	public String getText(){
-		try {
+	public String getText() throws IOException{
 			return in.readLine();
-		} catch (IOException e) {
-			e.printStackTrace();
-		}
-		return "";
 	}
 
 	@Override
@@ -29,6 +24,10 @@ public class ServerConnect implements Runnable {
 
 	public void kill() {
 		alive = false;
+	}
+	
+	public boolean isAlive() {
+		return alive;
 	}
 
 }

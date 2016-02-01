@@ -8,12 +8,14 @@ import java.net.InetAddress;
 import java.net.Socket;
 import java.net.UnknownHostException;
 
-public class Client implements Runnable{
+public class Client implements Runnable {
 	private InetAddress host;
 	private int port;
 	private Socket socket;
 	private PrintWriter out;
 	private BufferedReader in;
+	private ClientGUIthread GUI;
+	private ServerConnect connect;
 
 	public Client() throws UnknownHostException {
 		host = InetAddress.getLocalHost();
@@ -34,34 +36,48 @@ public class Client implements Runnable{
 	}
 
 	private void Initiate() {
-
-		// createGUI
-		// create 2 threads, add printWriter to GUI.
-		// put the whole NoName in this method?
-		// run and listen to threads
 		try {
 			socket = new Socket(host, port);
 		} catch (IOException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
+			closeOnError("Couldn't create socket.");
 		}
 		startIO();
-		
 
 		run();
 	}
-	
+
 	@Override
 	public void run() {
-		ClientGUIthread GUI = new ClientGUIthread (out);
-		ServerConnect connect = new ServerConnect (in);
+		GUI = new ClientGUIthread(out);
+		connect = new ServerConnect(in);
 		String str;
 		while (true) {
-			str = connect.getText();
-			if (str.length()>0){
-				GUI.displayInput(str);
+			try {
+				str = connect.getText();
+				if (str.length() > 0) {
+					GUI.displayInput(str);
+				}
+			} catch (IOException e) {
+				closeOnError("Connection to server lost.");
 			}
 		}
+
+	}
+
+	/** Method for displaying error message and then close program */
+	private void closeOnError(String s ) {
+		System.out.println(s + "\n" + "Closing connection and software, please restart");
+		try {
+			if(socket!=null)socket.close();
+		} catch (IOException e1) {
+			System.out.println("Couldn't close socket");
+		}
+		try {
+			Thread.sleep(2000);
+		} catch (InterruptedException e) {
+			e.printStackTrace();
+		}
+		System.exit(0);
 	}
 
 	private void startIO() {
@@ -69,19 +85,16 @@ public class Client implements Runnable{
 			in = new BufferedReader(new InputStreamReader(
 					socket.getInputStream()));
 		} catch (IOException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
+			closeOnError("Couldn't create InputReader, IOException");
 		}
 
 		try {
 			out = new PrintWriter(new OutputStreamWriter(
 					socket.getOutputStream(), "ISO-8859-1"), true);
 		} catch (UnsupportedEncodingException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
+			closeOnError("Encoding for PrintWriter not supported");
 		} catch (IOException e1) {
-			// TODO Auto-generated catch block
-			e1.printStackTrace();
+			closeOnError("Couldn't create OutPutStream, IOException");
 		}
 	}
 }
