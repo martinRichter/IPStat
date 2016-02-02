@@ -31,7 +31,6 @@ public class Client {
 		} else {
 			port = Integer.parseInt(args[1]);
 		}
-		
 		client = new ClientRunner (host, port);
 	}
 

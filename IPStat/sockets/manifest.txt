@@ -1,1 +1,1 @@
-Main-Class: Client
+Main-Class: Client.java
