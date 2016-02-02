@@ -17,18 +17,6 @@ public class ClientRunner implements Runnable {
 	private ClientGUI GUI;
 	private ServerConnect connect;
 
-	public ClientRunner() throws UnknownHostException {
-		host = InetAddress.getLocalHost();
-		port = 2000;
-		Initiate();
-	}
-
-	public ClientRunner(InetAddress host) {
-		this.host = host;
-		port = 2000;
-		Initiate();
-	}
-
 	public ClientRunner(InetAddress host, int port) {
 		this.host = host;
 		this.port = port;
