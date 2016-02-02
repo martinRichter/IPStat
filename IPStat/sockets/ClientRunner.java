@@ -37,7 +37,7 @@ public class ClientRunner implements Runnable {
 	@Override
 	public void run() {
 		GUI = new ClientGUI(out);
-		GUI.setWindowTitle(host.getHostName() + ": " + port);
+		GUI.setWindowTitle(host.getHostName(), Integer.toString(port));
 		connect = new ServerConnect(in);
 		while (true) {
 			try {

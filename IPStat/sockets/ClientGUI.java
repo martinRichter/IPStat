@@ -35,8 +35,8 @@ public class ClientGUI extends JFrame {
 	}
 
 	/** Method for setting windows title */
-	public void setWindowTitle(String s) {
-		setTitle(s);
+	public void setWindowTitle(String host, String port) {
+		setTitle("Connected to: " + host + " via port: " + port);
 	}
 
 	private void createGUI() {
