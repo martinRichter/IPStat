@@ -8,7 +8,7 @@ import java.net.InetAddress;
 import java.net.Socket;
 import java.net.UnknownHostException;
 
-public class Client implements Runnable {
+public class ClientRunner implements Runnable {
 	private InetAddress host;
 	private int port;
 	private Socket socket;
@@ -17,19 +17,19 @@ public class Client implements Runnable {
 	private ClientGUI GUI;
 	private ServerConnect connect;
 
-	public Client() throws UnknownHostException {
+	public ClientRunner() throws UnknownHostException {
 		host = InetAddress.getLocalHost();
 		port = 2000;
 		Initiate();
 	}
 
-	public Client(InetAddress host) {
+	public ClientRunner(InetAddress host) {
 		this.host = host;
 		port = 2000;
 		Initiate();
 	}
 
-	public Client(InetAddress host, int port) {
+	public ClientRunner(InetAddress host, int port) {
 		this.host = host;
 		this.port = port;
 		Initiate();

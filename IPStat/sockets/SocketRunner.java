@@ -6,7 +6,7 @@ public class SocketRunner {
 	public static void main(String[] args) {
 		try {
 			// Client client = new Client(InetAddress.getByName("atlas.dsv.su.se"), 9494);
-			Client client = new Client();
+			ClientRunner client = new ClientRunner();
 		} catch (UnknownHostException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
