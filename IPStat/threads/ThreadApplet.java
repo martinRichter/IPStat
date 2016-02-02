@@ -37,8 +37,8 @@ public class ThreadApplet extends JApplet {
 
 		setSize(300, 200);
 	}
-	
-	/**Listens for clicks on the buttons and starts/stops the threads*/
+
+	/** Listens for clicks on the buttons and starts/stops the threads */
 	private class Listener implements ActionListener {
 		public void actionPerformed(ActionEvent ae) {
 			if (ae.getSource() == b1) {
