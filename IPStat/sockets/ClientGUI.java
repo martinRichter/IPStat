@@ -3,8 +3,10 @@ import java.awt.event.ActionEvent;
 import java.io.PrintWriter;
 
 import javax.swing.*;
+import javax.swing.text.DefaultCaret;
 
 public class ClientGUI extends JFrame {
+	private JPanel panel;
 	private JTextField textField;
 	private JTextArea textArea;
 	private JScrollPane scroll;
@@ -16,14 +18,14 @@ public class ClientGUI extends JFrame {
 	public ClientGUI(PrintWriter out) {
 		createGUI();
 		this.out = out;
-		;
 	}
 
 	/**
-	 * Method for retrieving input to TextField, sends to PrintWriter
+	 * Retrieves input to TextField & sends to PrintWriter.
 	 */
-	private void sendInput() {
+	private void buttonClicked() {
 		out.println(textField.getText());
+		textField.setText("");
 	}
 
 	/** Method for displaying input from server in textArea */
@@ -39,32 +41,37 @@ public class ClientGUI extends JFrame {
 
 	private void createGUI() {
 		setSize(300, 300);
-		textField = new JTextField(25);
-		textArea = new JTextArea(14, 23);
 
-		this.getContentPane().setLayout(new FlowLayout());
-		this.getContentPane().add(textField);
+		//BorderLayout so the fields adapt to window size
+		panel = new JPanel();
+		panel.setLayout(new BorderLayout());
+
+		textField = new JTextField();
+		textArea = new JTextArea();
+		JScrollPane scroll = new JScrollPane(textArea);
 
 		/**
-		 * Action listener that listens for click and then calls for method to
-		 * retrieve keyboard input and clears textField.
+		 * Action listener that listens for click and calls buttonClicked().
 		 */
 		Action action = new AbstractAction() {
 			@Override
 			public void actionPerformed(ActionEvent e) {
-				sendInput();
-				textField.setText("");
+				buttonClicked();
 			}
 		};
 		textField.addActionListener(action);
 
 		textArea.setLineWrap(true);
-		textArea.setWrapStyleWord(true);
+		
+		//To make the textArea go to the bottom
+		DefaultCaret caret = (DefaultCaret)textArea.getCaret();
+		caret.setUpdatePolicy(DefaultCaret.ALWAYS_UPDATE);
 
-		scroll = new JScrollPane(textArea);
-		scroll.setVerticalScrollBarPolicy(JScrollPane.VERTICAL_SCROLLBAR_ALWAYS);
+		panel.add(textField, BorderLayout.PAGE_START);
+		panel.add(scroll, BorderLayout.CENTER);
 
-		this.add(scroll);
+		this.add(panel);
+
 		this.setVisible(true);
 		this.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 	}
