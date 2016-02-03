@@ -19,8 +19,9 @@ public class ServerGUI extends JFrame {
 
 
 	/** Method for displaying text in textArea */
-	public void displayInput() {
-		//TODO skriva meddelande från klienter + från/till kopplingar
+	public void display(String s) {
+		textArea.append(s + "\n");
+		textArea.validate();
 	}
 
 	/** Method for setting window title */
