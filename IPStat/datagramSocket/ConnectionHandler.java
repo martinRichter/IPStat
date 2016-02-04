@@ -1,4 +1,5 @@
 import java.awt.Point;
+import java.net.DatagramPacket;
 import java.net.DatagramSocket;
 import java.net.InetAddress;
 
@@ -19,6 +20,8 @@ public class ConnectionHandler implements Runnable{
 	@Override
 	public void run() {
 		// TODO
+		 //DatagramPacket request = new DatagramPacket(new byte[1], 1, host , PORT);
+		 //DatagramPacket response = new DatagramPacket(new byte[1024], 1024);
 		//create sockets?
 		//loop receivePoint()
 	}
