@@ -34,12 +34,9 @@ public class ServerManager implements Runnable {
 			ClientHandler client = connections.get(i);
 			try {
 				String str = client.getText();
-				if (str.length()>0) {
+				if (!str.isEmpty()) {
 					displayText(client.getHost() + ": " + str);
-				} else if (str == null) {
-					System.out.println("Str is null");
-					displayText(client.getHost() + " disconnected.");
-					connections.remove(i);
+				} else {
 				}
 			} catch (IOException e) {
 				displayText(client.getHost() + " disconnected.");

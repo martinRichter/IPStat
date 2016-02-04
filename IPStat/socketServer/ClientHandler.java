@@ -18,15 +18,19 @@ public class ClientHandler implements Runnable {
 
 	/** Method for retrieving in put from client */
 	public String getText() throws IOException {
+		if (!socket.isConnected()){
+			throw new IOException();
+		}
 		try {
-			if (in.ready()) { // checks whether buffer is empty
+			if(in.ready()){ //checks whether buffer is empty
 				return in.readLine();
+			} else {
+				return "";
 			}
 		} catch (IOException e) {
 			kill();
 			throw e;
 		}
-		return "";
 	}
 
 	public String getHost() {
