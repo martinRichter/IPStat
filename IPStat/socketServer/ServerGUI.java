@@ -25,8 +25,8 @@ public class ServerGUI extends JFrame {
 	}
 
 	/** Method for setting window title */
-	public void updateWindowTitle() {
-		//TODO uppdatera antalet kopplade
+	public void updateWindowTitle(String s) {
+		setTitle(s);
 	}
 
 	private void createGUI() {
