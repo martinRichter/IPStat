@@ -1,9 +1,10 @@
 import java.awt.Point;
+import java.io.IOException;
 import java.net.DatagramPacket;
 import java.net.DatagramSocket;
 import java.net.InetAddress;
 
-public class ConnectionHandler implements Runnable{
+public class ConnectionHandler implements Runnable {
 	private Draw draw;
 	private DatagramSocket socket;
 	private InetAddress host;
@@ -19,24 +20,40 @@ public class ConnectionHandler implements Runnable{
 
 	@Override
 	public void run() {
-		// TODO
-		 //DatagramPacket request = new DatagramPacket(new byte[1], 1, host , PORT);
-		 //DatagramPacket response = new DatagramPacket(new byte[1024], 1024);
-		//create sockets?
-		//loop receivePoint()
+		System.out.println("running conHandler");
+		while (true){
+			receivePoint();
+		}
 	}
-	
-	private void receivePoint(){
-		// TODO Look for point in UDP socket, then call draw.addPoint(p);
-//		String[] xy = message.split(" ");
-//		Point p = new Point(Integer.parseInt(xy[0]), Integer.parseInt(xy[1])); 
-//		draw.addPoint(p);
+
+	private void receivePoint() {
+		byte[] receiveData = new byte[1024];
+		DatagramPacket receivePacket = new DatagramPacket(receiveData,
+				receiveData.length);
+		try {
+			socket.receive(receivePacket);
+			String str = new String(receiveData);
+			String[] xy = str.split(" ");
+			String xstr = xy[0];
+			String ystr = xy[1];
+			System.out.println(ystr +"y ends here");
+			int x = Integer.parseInt(xstr);
+//			int y = Integer.parseInt(ystr);
+		} catch (IOException e) {
+			System.out.println("Couldn't receive packet");
+		}
 	}
-	
 
 	public void sendPoint(Point p) {
+		byte[] data = new byte[1024];
 		String message = Integer.toString(p.x) + " " + Integer.toString(p.y);
-		// TODO send point to UDP socket
+		data = message.getBytes();
+		DatagramPacket sendData = new DatagramPacket(data, data.length, host, hostPort);
+		try {
+			socket.send(sendData);
+		} catch (IOException e) {
+			System.out.println("Couldn't send packet");
+		}
 	}
 
 }
