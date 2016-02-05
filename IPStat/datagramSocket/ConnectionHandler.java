@@ -28,10 +28,14 @@ public class ConnectionHandler implements Runnable{
 	
 	private void receivePoint(){
 		// TODO Look for point in UDP socket, then call draw.addPoint(p);
+//		String[] xy = message.split(" ");
+//		Point p = new Point(Integer.parseInt(xy[0]), Integer.parseInt(xy[1])); 
+//		draw.addPoint(p);
 	}
 	
 
 	public void sendPoint(Point p) {
+		String message = Integer.toString(p.x) + " " + Integer.toString(p.y);
 		// TODO send point to UDP socket
 	}
 

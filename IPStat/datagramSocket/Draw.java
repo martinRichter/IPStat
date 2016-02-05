@@ -8,15 +8,19 @@ import java.util.*;
  * modifications might occur.
  */
 public class Draw extends JFrame {
-	private Paper p;
+	private Paper paper;
 
 	public Draw(ConnectionHandler connection) {
-		p = new Paper(connection);
+		paper = new Paper(connection);
 		setDefaultCloseOperation(EXIT_ON_CLOSE);
-		getContentPane().add(p, BorderLayout.CENTER);
+		getContentPane().add(paper, BorderLayout.CENTER);
 
 		setSize(640, 480);
 		setVisible(true);
+	}
+	
+	public void addPoint(Point p){
+		paper.addPoint(p);
 	}
 }
 
