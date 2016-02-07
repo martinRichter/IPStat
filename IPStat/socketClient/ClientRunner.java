@@ -9,6 +9,7 @@ import java.net.Socket;
 import java.net.UnknownHostException;
 
 public class ClientRunner implements Runnable {
+	Thread t = new Thread(this);
 	private InetAddress host;
 	private int port;
 	private Socket socket;
@@ -21,9 +22,10 @@ public class ClientRunner implements Runnable {
 		this.host = host;
 		this.port = port;
 		Initiate();
+		t.start();
 	}
 
-	/**Starts the socket connection, if fails, stops the program*/
+	/** Starts the socket connection, if fails, stops the program */
 	private void Initiate() {
 		try {
 			socket = new Socket(host, port);
@@ -31,7 +33,6 @@ public class ClientRunner implements Runnable {
 			closeOnError("Couldn't create socket.");
 		}
 		startIO();
-		run();
 	}
 
 	@Override
