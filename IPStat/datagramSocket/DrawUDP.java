@@ -14,7 +14,7 @@ public class DrawUDP {
 		try {
 			InetAddress host = InetAddress.getByName(args[1]);
 			try (DatagramSocket socket = new DatagramSocket(myPort)) {
-				socket.setSoTimeout(10);
+				socket.setSoTimeout(100);
 				socket.setReceiveBufferSize(25600);
 				socket.setSendBufferSize(25600);
 				ConnectionHandler connection = new ConnectionHandler(socket,
