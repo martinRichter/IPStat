@@ -20,35 +20,29 @@ public class ConnectionHandler implements Runnable {
 
 	@Override
 	public void run() {
-		System.out.println("running conHandler");
-		while (true){
-			receivePoint();
-		}
-	}
-
-	private void receivePoint() {
-		byte[] receiveData = new byte[1024];
+		byte[] receiveData = new byte[32];
 		DatagramPacket receivePacket = new DatagramPacket(receiveData,
 				receiveData.length);
-		try {
-			socket.receive(receivePacket);
-			String str = new String(receiveData);
-			String[] xy = str.split(" ");
-			String xstr = xy[0];
-			String ystr = xy[1];
-			System.out.println(ystr +"y ends here");
-			int x = Integer.parseInt(xstr);
-//			int y = Integer.parseInt(ystr);
-		} catch (IOException e) {
-			System.out.println("Couldn't receive packet");
+		String[] xy;
+		while (true) {
+			try {
+				socket.receive(receivePacket);
+				String str = new String(receiveData);
+				xy = str.split(" ");
+				// Trim y value as whitespaces are added after the y value.
+				draw.addPoint(new Point(Integer.parseInt(xy[0]), Integer
+						.parseInt(xy[1].trim())));
+			} catch (IOException e) {
+			}
 		}
 	}
 
 	public void sendPoint(Point p) {
-		byte[] data = new byte[1024];
+		byte[] data = new byte[32];
 		String message = Integer.toString(p.x) + " " + Integer.toString(p.y);
 		data = message.getBytes();
-		DatagramPacket sendData = new DatagramPacket(data, data.length, host, hostPort);
+		DatagramPacket sendData = new DatagramPacket(data, data.length, host,
+				hostPort);
 		try {
 			socket.send(sendData);
 		} catch (IOException e) {
