@@ -4,8 +4,9 @@ import java.io.InputStreamReader;
 import java.io.PrintWriter;
 import java.net.Socket;
 
-class ClientHandler extends Thread {
+class ClientHandler implements Runnable {
 
+	Thread t = new Thread(this);
 	private Server server;
 	private Socket socket;
 	private String host;
@@ -15,7 +16,7 @@ class ClientHandler extends Thread {
 		this.socket = s;
 		this.server = server;
 		host = socket.getInetAddress().getHostName();
-		start();
+		t.start();
 	}
 
 	public void run() {
