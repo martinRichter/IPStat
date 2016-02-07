@@ -4,8 +4,6 @@ import java.net.UnknownHostException;
 public class Client {
 
 	public static void main(String[] args) {
-		//host = args[0]
-		//port = args[1]
 		InetAddress host = null;
 		int port;
 		ClientRunner client;
