@@ -1,7 +1,7 @@
 import java.io.IOException;
 import java.net.ServerSocket;
 
-public class ServerRunner {
+public class ServerStart {
 
 	public static void main(String[] args) {
 		int port;
@@ -10,10 +10,10 @@ public class ServerRunner {
 		} else {
 			port = Integer.parseInt(args[1]);
 		}
-
+		
 		try {
-			ServerManager manager = new ServerManager(new ServerSocket(port),
-					new ServerGUI());
+			Server server = new Server(new ServerSocket(port), new ServerGUI());
+			server.run();
 		} catch (IOException e) {
 			System.out.println("Can't create server, please restart.");
 			System.exit(0);

@@ -1,63 +1,60 @@
-import java.io.*;
+import java.io.BufferedReader;
+import java.io.IOException;
+import java.io.InputStreamReader;
+import java.io.PrintWriter;
 import java.net.Socket;
-import java.net.SocketException;
 
-public class ClientHandler implements Runnable {
-	private String host;
+class ClientHandler implements Runnable {
+
+	private Server server;
 	private Socket socket;
-	private BufferedReader in;
+	private String host;
 	private PrintWriter out;
-	private boolean alive;
-
-	public ClientHandler(Socket socket) throws IOException {
-		this.socket = socket;
+	
+	public ClientHandler(Socket s, Server server) {
+		this.socket = s;
+		this.server = server;
 		host = socket.getInetAddress().getHostName();
-		setupIO();
-		alive = true;
 	}
 
-	/** Method for retrieving in put from client */
-	public String getText() throws IOException {
+	public void run() {
+		BufferedReader in = null;
 		try {
-			if (in.ready()) { // checks whether buffer is empty
-				return in.readLine();
-			}
-		} catch (IOException e) {
-			kill();
-			throw e;
+			out = new PrintWriter(socket.getOutputStream(), true);
+		} catch (IOException e1) {
+			System.out.println("FAILED TO CREATE OUTPUTSTREAM.");
 		}
-		return "";
+		try {
+			in = new BufferedReader(new InputStreamReader(
+					socket.getInputStream()));
+		} catch (IOException e) {
+			System.out.println("FAILED: GET INPUTSTREAM FROM CLIENT SOCKET");
+			server.removeClient(this);
+			return;
+		}
+
+		String inputLine;
+		try {
+			while ((inputLine = in.readLine()) != null) {
+				if (inputLine.equals("wwhhoo"))
+					server.who(this);
+				else
+					server.broadcast(host, inputLine);
+			}
+			in.close();
+			socket.close();
+			System.out.println("CLIENT DISCONNECTED NICELY");
+		} catch (IOException e) {
+			System.out.println("CLIENT DISCONNECTED BRUTALLY");
+		}
+		server.removeClient(this);
 	}
 
-	public String getHost() {
+	public String getHostName() {
 		return host;
 	}
 
-	public void sendText(String s) {
-		out.println(s);
-	}
-
-	@Override
-	public void run() {
-	}
-
-	/** Stops the thread from running and tries to close streams and socket. */
-	private void kill() {
-		alive = false;
-		out.close();
-		try {
-			in.close();
-		} catch (IOException e) {
-		}
-		try {
-			socket.close();
-		} catch (IOException e) {
-		}
-	}
-
-	/** Method for setting up PrintWriter and BufferedReader */
-	private void setupIO() throws IOException {
-		in = new BufferedReader(new InputStreamReader(socket.getInputStream()));
-		out = new PrintWriter(socket.getOutputStream(), true);
+	public void send(String s) {
+		out.print(s);
 	}
 }
