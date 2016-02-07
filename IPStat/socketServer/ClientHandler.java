@@ -4,7 +4,7 @@ import java.io.InputStreamReader;
 import java.io.PrintWriter;
 import java.net.Socket;
 
-class ClientHandler implements Runnable {
+class ClientHandler extends Thread {
 
 	private Server server;
 	private Socket socket;
@@ -15,6 +15,7 @@ class ClientHandler implements Runnable {
 		this.socket = s;
 		this.server = server;
 		host = socket.getInetAddress().getHostName();
+		start();
 	}
 
 	public void run() {
@@ -55,6 +56,6 @@ class ClientHandler implements Runnable {
 	}
 
 	public void send(String s) {
-		out.print(s);
+		out.println(s);
 	}
 }

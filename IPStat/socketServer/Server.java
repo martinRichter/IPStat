@@ -1,6 +1,7 @@
 import java.io.IOException;
 import java.net.ServerSocket;
 import java.net.Socket;
+import java.net.SocketException;
 import java.util.ArrayList;
 
 public class Server implements Runnable {
@@ -14,23 +15,28 @@ public class Server implements Runnable {
 	}
 
 	public synchronized void removeClient(ClientHandler client) {
-		String str = client.getHostName() + " was disconnected.";
-		connections.remove(client);
-		GUI.updateWindowTitle("Clients connected: " + connections.size());
-		sendAll(str);
+		if (connections.remove(client)) {
+			String str = client.getHostName() + " was disconnected.";
+			GUI.updateWindowTitle("Clients connected: " + connections.size());
+			sendAll(str);
+		}
 	}
 
-	public void who(ClientHandler client) {
+	public synchronized void who(ClientHandler client) {
 		GUI.display(client.getHostName() + "requested to know connections");
-		// TODO send all connected clients
-		client.send("Connected clients are: ");
+		String str = "";
+		for (ClientHandler cli : connections){
+			str = str + cli.getHostName() + " ";
+		}
+		client.send("Connected clients are: " + str);
 	}
 
 	public synchronized void broadcast(String host, String inputLine) {
 		sendAll(host + ": " + inputLine);
 	}
 
-	private void sendAll(String s) {
+	private synchronized void sendAll(String s) {
+		GUI.display(s);
 		for (ClientHandler client : connections) {
 			client.send(s);
 		}
@@ -47,9 +53,8 @@ public class Server implements Runnable {
 				socket = serverSocket.accept();
 				client = new ClientHandler(socket, this);
 				connections.add(client);
-				client.run();
 			} catch (IOException e) {
-				System.out.println("Couldn't receive new connection.");
+				// Didn't receive a new connection
 			}
 		}
 	}
