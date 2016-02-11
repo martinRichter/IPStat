@@ -23,4 +23,7 @@ public class KeyHandler {
 		keyGen.init(256);
 		return keyGen.generateKey();
 	}
+
+	// good link for reading/writing key file
+	// http://www.coderanch.com/t/134625/Security/recreating-AES-key-txt-file
 }
