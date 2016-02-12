@@ -3,21 +3,23 @@ import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.security.NoSuchAlgorithmException;
+
 import javax.crypto.*;
 
 public class KeyHandler {
-	public static void main(String[] args){
-		if (args[0] == null){
+	public static void main(String[] args) {
+		if (args[0] == null) {
 			System.out.println("Please provide key name");
 			System.exit(0);
 		}
-		KeyHandler keyHandler = new KeyHandler(args[0]);
+		KeyHandler keyHandler = new KeyHandler();
+		keyHandler.saveKey(keyHandler.generateKey(), args[0]);
 	}
+
 	private KeyGenerator keyGen;
 
-	/** Creates KeyHandler, takes in a string to name secret key. */
-	public KeyHandler(String keyName) {
-		printKey(generateKey(), keyName);
+	/** Creates KeyHandler */
+	public KeyHandler() {
 	}
 
 	/** Generates the key and returns it */
@@ -32,9 +34,11 @@ public class KeyHandler {
 		return keyGen.generateKey();
 	}
 
-	/** Takes in a key and save it to file with name */
-	private void printKey(SecretKey key, String name) {
-		byte[] data = new byte[key.getEncoded().length];
+	/**
+	 * Takes in a key and save it to file with name. Generates encoding for key
+	 * and writes to file.
+	 */
+	private void saveKey(SecretKey key, String name) {
 		FileOutputStream fos;
 		try {
 			fos = new FileOutputStream(name);
