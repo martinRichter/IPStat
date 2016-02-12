@@ -5,6 +5,7 @@ import java.io.PrintWriter;
 import java.io.UnsupportedEncodingException;
 import java.nio.file.Files;
 import java.nio.file.Paths;
+import java.security.InvalidAlgorithmParameterException;
 import java.security.InvalidKeyException;
 import java.security.NoSuchAlgorithmException;
 import javax.crypto.BadPaddingException;
@@ -12,7 +13,9 @@ import javax.crypto.Cipher;
 import javax.crypto.IllegalBlockSizeException;
 import javax.crypto.NoSuchPaddingException;
 import javax.crypto.SecretKey;
+import javax.crypto.spec.IvParameterSpec;
 import javax.crypto.spec.SecretKeySpec;
+import java.util.Base64;
 
 public class EncryptHandler {
 	public static void main(String[] args) {
@@ -34,15 +37,21 @@ public class EncryptHandler {
 	public EncryptHandler() {
 	}
 
-	/** Takes in a string and a key, encrypts string and returns encrypted string */
+	/**
+	 * Takes in a string and a key, encrypts string and returns encrypted string
+	 * in base64 format.
+	 */
 	private String encrypt(String data, SecretKey key) {
 		Cipher cipher;
-		String str ="";
+		String str = "";
 		try {
-			cipher = Cipher.getInstance("AES");
-			cipher.init(Cipher.ENCRYPT_MODE, key);
+			cipher = Cipher.getInstance("AES/CBC/PKCS5Padding");
+			byte[] iv = new byte[cipher.getBlockSize()];
+			IvParameterSpec ivParams = new IvParameterSpec(iv);
+			cipher.init(Cipher.ENCRYPT_MODE, key, ivParams);
 			byte[] stringBytes = data.getBytes("UTF8");
 			byte[] bytes = cipher.doFinal(stringBytes);
+			Base64.getEncoder().encode(bytes);
 			str = new String(bytes, "UTF-8");
 		} catch (NoSuchAlgorithmException e) {
 			System.out.println("No such algorithm for encryption");
@@ -62,14 +71,17 @@ public class EncryptHandler {
 		} catch (BadPaddingException e) {
 			System.out.println("Bad padding for encryption");
 			System.exit(0);
+		} catch (InvalidAlgorithmParameterException e) {
+			System.out.println("InvalidAlgorithmParameter for encryption");
+			System.exit(0);
 		}
 		return str;
 	}
 
 	/** Takes in a string and fileName and prints to to file with fileName */
 	private void saveFile(String file, String fileName) {
-		try(PrintWriter out = new PrintWriter(fileName)) {
-		    out.println( file );
+		try (PrintWriter out = new PrintWriter(fileName)) {
+			out.println(file);
 		} catch (FileNotFoundException e) {
 			System.out.println("File not found when saving file");
 			System.exit(0);
@@ -85,10 +97,11 @@ public class EncryptHandler {
 			System.out.println("IOException reading file");
 			System.exit(0);
 		}
+		System.out.println(stringFile);
 		return stringFile;
 	}
 
-	/** Takes in name for key file and decodes it, returns a SecretKey */
+	/** Takes in name for key file and returns a SecretKey */
 	private SecretKey loadKey(String keyFile) {
 		byte[] keybyte = new byte[16];
 		FileInputStream fin;

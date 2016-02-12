@@ -5,13 +5,17 @@ import java.io.PrintWriter;
 import java.io.UnsupportedEncodingException;
 import java.nio.file.Files;
 import java.nio.file.Paths;
+import java.security.InvalidAlgorithmParameterException;
 import java.security.InvalidKeyException;
 import java.security.NoSuchAlgorithmException;
+import java.util.Base64;
+
 import javax.crypto.BadPaddingException;
 import javax.crypto.Cipher;
 import javax.crypto.IllegalBlockSizeException;
 import javax.crypto.NoSuchPaddingException;
 import javax.crypto.SecretKey;
+import javax.crypto.spec.IvParameterSpec;
 import javax.crypto.spec.SecretKeySpec;
 
 public class DecryptHandler {
@@ -20,9 +24,12 @@ public class DecryptHandler {
 			System.out.println("Please provide key name");
 			System.exit(0);
 		}
-		// TODO read args[0], for encData file
-		// TODO read args[1], for key file
-		// TODO read args[2], for decData name
+		DecryptHandler decH = new DecryptHandler();
+		String data = decH.loadFile(args[0]); // loads data to be decrypted to a
+												// string
+		SecretKey secKey = decH.loadKey(args[1]); // loads key
+		String decData = decH.decrypt(data, secKey); // decrypts data using key.
+		decH.saveFile(decData, args[2]); // saves decrypted data to file.
 	}
 
 	/**
@@ -31,16 +38,20 @@ public class DecryptHandler {
 	public DecryptHandler() {
 	}
 
-	
-	/** Takes in a string and a key, encrypts string and returns encrypted string */
+	/**
+	 * Takes in a string and a key, decrypts string and base64 decodes it and returns it.
+	 */
 	private String decrypt(String data, SecretKey key) {
 		Cipher cipher;
-		String str ="";
+		String str = "";
 		try {
-			cipher = Cipher.getInstance("AES");
-			cipher.init(Cipher.ENCRYPT_MODE, key);
+			cipher = Cipher.getInstance("AES/CBC/PKCS5Padding");
+			byte[] iv = new byte[cipher.getBlockSize()];
+            IvParameterSpec ivParams = new IvParameterSpec(iv);
+			cipher.init(Cipher.DECRYPT_MODE, key, ivParams);
 			byte[] stringBytes = data.getBytes("UTF8");
 			byte[] bytes = cipher.doFinal(stringBytes);
+			Base64.getDecoder().decode(bytes);
 			str = new String(bytes, "UTF-8");
 		} catch (NoSuchAlgorithmException e) {
 			System.out.println("No such algorithm for decryption");
@@ -49,32 +60,36 @@ public class DecryptHandler {
 			System.out.println("No such padding for decryption");
 			System.exit(0);
 		} catch (InvalidKeyException e) {
+			e.printStackTrace();
 			System.out.println("Invalid key for decryption");
 			System.exit(0);
 		} catch (UnsupportedEncodingException e) {
 			System.out.println("Unsuported padding for decryption");
 			System.exit(0);
 		} catch (IllegalBlockSizeException e) {
+			e.printStackTrace();
 			System.out.println("Illegal block size for decryption");
 			System.exit(0);
 		} catch (BadPaddingException e) {
 			System.out.println("Bad padding for decryption");
 			System.exit(0);
+		} catch (InvalidAlgorithmParameterException e) {
+			System.out.println("InvalidAlgorithmParameter for decryption");
+			System.exit(0);
 		}
 		return str;
 	}
-	
-	
+
 	/** Takes in a string and fileName and prints to to file with fileName */
 	private void saveFile(String file, String fileName) {
-		try(PrintWriter out = new PrintWriter(fileName)) {
-		    out.println( file );
+		try (PrintWriter out = new PrintWriter(fileName)) {
+			out.println(file);
 		} catch (FileNotFoundException e) {
 			System.out.println("File not found when saving file");
 			System.exit(0);
 		}
 	}
-	
+
 	/** Loads a file from fileName and returns as a string. */
 	private String loadFile(String fileName) {
 		String stringFile = "";
@@ -86,8 +101,8 @@ public class DecryptHandler {
 		}
 		return stringFile;
 	}
-	
-	/**Takes in name for key file and decodes it, returns a SecretKey*/
+
+	/** Takes in name for key file and returns a SecretKey */
 	private SecretKey loadKey(String keyFile) {
 		byte[] keybyte = new byte[16];
 		FileInputStream fin;
