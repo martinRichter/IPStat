@@ -15,6 +15,7 @@ public class BrowserGUI extends JFrame {
 	public BrowserGUI(BrowserConnection conn) {
 		this.conn = conn;
 		createGUI();
+		buttonClicked();
 	}
 
 	/**
