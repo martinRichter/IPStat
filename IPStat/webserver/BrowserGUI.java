@@ -7,31 +7,27 @@ public class BrowserGUI extends JFrame {
 	private JTextField textField;
 	private JTextArea textArea;
 	private JScrollPane scroll;
+	private BrowserConnection conn;
 
 	/**
 	 * Creates GUI.
 	 */
-	public BrowserGUI() {
-		// TODO
+	public BrowserGUI(BrowserConnection conn) {
+		this.conn = conn;
 		createGUI();
 	}
 
 	/**
-	 * Retrieves input from TextField & requests web page.
+	 * Retrieves input from TextField, requests webpage from connection and
+	 * displays the result.
 	 */
 	private void buttonClicked() {
-		// TODO textField.getText();
+		displayInput(conn.connect(textField.getText()));
 	}
 
 	/** Method for displaying input from server in textArea */
 	public void displayInput(String s) {
-		// TODO
-	}
-
-	/** Method for setting window title */
-	public void setWindowTitle() {
-		// TODO
-		// setTitle("");
+		textArea.setText(s);
 	}
 
 	/**
@@ -39,7 +35,7 @@ public class BrowserGUI extends JFrame {
 	 * window size.
 	 */
 	private void createGUI() {
-		setSize(300, 300);
+		setSize(750, 450);
 
 		// BorderLayout so the fields adapt to window size
 		panel = new JPanel();
@@ -59,7 +55,7 @@ public class BrowserGUI extends JFrame {
 			}
 		};
 		textField.addActionListener(action);
-
+		textField.setText("http://people.dsv.su.se/pierre/home/index.cgi");
 		textArea.setLineWrap(true);
 
 		panel.add(textField, BorderLayout.PAGE_START);
