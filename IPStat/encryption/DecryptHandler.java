@@ -52,7 +52,7 @@ public class DecryptHandler {
 			IvParameterSpec ivParams = new IvParameterSpec(iv);
 			cipher.init(Cipher.DECRYPT_MODE, key, ivParams);
 			byte[] stringBytes = data.getBytes();
-			byte[] decBytes =  Base64.getDecoder().decode(stringBytes);
+			byte[] decBytes = Base64.getDecoder().decode(stringBytes);
 			byte[] bytes = cipher.doFinal(decBytes);
 			str = new String(bytes, "UTF-8");
 		} catch (NoSuchAlgorithmException e) {
