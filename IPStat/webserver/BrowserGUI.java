@@ -28,6 +28,7 @@ public class BrowserGUI extends JFrame {
 	/** Method for displaying input from server in textArea */
 	public void displayInput(String s) {
 		textArea.setText(s);
+		textArea.setCaretPosition(0);
 	}
 
 	/**
@@ -56,10 +57,10 @@ public class BrowserGUI extends JFrame {
 		};
 		textField.addActionListener(action);
 		textField.setText("http://people.dsv.su.se/pierre/home/index.cgi");
-		textArea.setLineWrap(true);
 
 		panel.add(textField, BorderLayout.PAGE_START);
 		panel.add(scroll, BorderLayout.CENTER);
+		
 
 		this.add(panel);
 		this.setVisible(true);
