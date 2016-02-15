@@ -29,11 +29,15 @@ public class BrowserGUI extends JFrame {
 	}
 
 	/** Method for setting window title */
-	public void setWindowTitle(String host, String port) {
+	public void setWindowTitle() {
 		// TODO
 		// setTitle("");
 	}
 
+	/**
+	 * Creates the GUI, adds action listener, textArea & textField adapts to
+	 * window size.
+	 */
 	private void createGUI() {
 		setSize(300, 300);
 
