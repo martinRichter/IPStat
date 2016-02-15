@@ -1,3 +1,4 @@
+import java.io.ByteArrayOutputStream;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.IOException;
@@ -39,7 +40,8 @@ public class DecryptHandler {
 	}
 
 	/**
-	 * Takes in a string and a key, decrypts string and base64 decodes it and returns it.
+	 * Takes in a string and a key, decrypts string and base64 decodes it and
+	 * returns it.
 	 */
 	private String decrypt(String data, SecretKey key) {
 		Cipher cipher;
@@ -47,34 +49,29 @@ public class DecryptHandler {
 		try {
 			cipher = Cipher.getInstance("AES/CBC/PKCS5Padding");
 			byte[] iv = new byte[cipher.getBlockSize()];
-            IvParameterSpec ivParams = new IvParameterSpec(iv);
+			IvParameterSpec ivParams = new IvParameterSpec(iv);
 			cipher.init(Cipher.DECRYPT_MODE, key, ivParams);
-			byte[] stringBytes = data.getBytes("UTF8");
+			byte[] stringBytes = data.getBytes();
 			byte[] bytes = cipher.doFinal(stringBytes);
 			Base64.getDecoder().decode(bytes);
-			str = new String(bytes, "UTF-8");
+			str = new String(bytes);
 		} catch (NoSuchAlgorithmException e) {
-			System.out.println("No such algorithm for decryption");
+			e.printStackTrace();
 			System.exit(0);
 		} catch (NoSuchPaddingException e) {
-			System.out.println("No such padding for decryption");
+			e.printStackTrace();
 			System.exit(0);
 		} catch (InvalidKeyException e) {
 			e.printStackTrace();
-			System.out.println("Invalid key for decryption");
-			System.exit(0);
-		} catch (UnsupportedEncodingException e) {
-			System.out.println("Unsuported padding for decryption");
 			System.exit(0);
 		} catch (IllegalBlockSizeException e) {
 			e.printStackTrace();
-			System.out.println("Illegal block size for decryption");
 			System.exit(0);
 		} catch (BadPaddingException e) {
-			System.out.println("Bad padding for decryption");
+			e.printStackTrace();
 			System.exit(0);
 		} catch (InvalidAlgorithmParameterException e) {
-			System.out.println("InvalidAlgorithmParameter for decryption");
+			e.printStackTrace();
 			System.exit(0);
 		}
 		return str;
@@ -104,11 +101,16 @@ public class DecryptHandler {
 
 	/** Takes in name for key file and returns a SecretKey */
 	private SecretKey loadKey(String keyFile) {
-		byte[] keybyte = new byte[16];
+		ByteArrayOutputStream baos = new ByteArrayOutputStream();
 		FileInputStream fin;
+		int i = 0;
 		try {
 			fin = new FileInputStream(keyFile);
-			fin.read(keybyte);
+			while ((i = fin.read()) != -1) {
+				baos.write(i);
+			}
+			fin.close();
+			baos.close();
 		} catch (FileNotFoundException e) {
 			System.out.println("Keyfile not found.");
 			System.exit(0);
@@ -116,7 +118,9 @@ public class DecryptHandler {
 			System.out.println("IOException reading keybyte");
 			System.exit(0);
 		}
-		SecretKey secKey = new SecretKeySpec(keybyte, 0, 16, "AES");
+		byte[] keyBytes = baos.toByteArray();
+		SecretKey secKey = new SecretKeySpec(keyBytes, "AES");
+		System.out.println(secKey.toString());
 		return secKey;
 	}
 }

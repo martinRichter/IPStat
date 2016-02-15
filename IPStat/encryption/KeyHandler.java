@@ -31,7 +31,9 @@ public class KeyHandler {
 			System.exit(0);
 		}
 		keyGen.init(256);
-		return keyGen.generateKey();
+		SecretKey secKey = keyGen.generateKey();
+		System.out.println(secKey.toString());
+		return secKey;
 	}
 
 	/**

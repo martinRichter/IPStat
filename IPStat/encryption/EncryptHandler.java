@@ -1,3 +1,4 @@
+import java.io.ByteArrayOutputStream;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.IOException;
@@ -8,6 +9,7 @@ import java.nio.file.Paths;
 import java.security.InvalidAlgorithmParameterException;
 import java.security.InvalidKeyException;
 import java.security.NoSuchAlgorithmException;
+
 import javax.crypto.BadPaddingException;
 import javax.crypto.Cipher;
 import javax.crypto.IllegalBlockSizeException;
@@ -15,12 +17,14 @@ import javax.crypto.NoSuchPaddingException;
 import javax.crypto.SecretKey;
 import javax.crypto.spec.IvParameterSpec;
 import javax.crypto.spec.SecretKeySpec;
+
 import java.util.Base64;
 
 public class EncryptHandler {
 	public static void main(String[] args) {
 		if (args.length != 3) {
-			System.out.println("Please provide data file, key name and name for encrypted data file");
+			System.out
+					.println("Please provide data file, key name and name for encrypted data file");
 			System.exit(0);
 		}
 		EncryptHandler encH = new EncryptHandler();
@@ -49,32 +53,30 @@ public class EncryptHandler {
 			byte[] iv = new byte[cipher.getBlockSize()];
 			IvParameterSpec ivParams = new IvParameterSpec(iv);
 			cipher.init(Cipher.ENCRYPT_MODE, key, ivParams);
-			byte[] stringBytes = data.getBytes("UTF8");
+			byte[] stringBytes = data.getBytes();
+			Base64.getEncoder().encode(stringBytes);
 			byte[] bytes = cipher.doFinal(stringBytes);
-			Base64.getEncoder().encode(bytes);
-			str = new String(bytes, "UTF-8");
+			str = new String(bytes);
 		} catch (NoSuchAlgorithmException e) {
-			System.out.println("No such algorithm for encryption");
+			e.printStackTrace();
 			System.exit(0);
 		} catch (NoSuchPaddingException e) {
-			System.out.println("No such padding for encryption");
-			System.exit(0);
-		} catch (InvalidKeyException e) {
-			System.out.println("Invalid key for encryption");
-			System.exit(0);
-		} catch (UnsupportedEncodingException e) {
-			System.out.println("Unsuported padding for encryption");
+			e.printStackTrace();
 			System.exit(0);
 		} catch (IllegalBlockSizeException e) {
-			System.out.println("Illegal block size for encryption");
+			e.printStackTrace();
 			System.exit(0);
 		} catch (BadPaddingException e) {
-			System.out.println("Bad padding for encryption");
+			e.printStackTrace();
 			System.exit(0);
 		} catch (InvalidAlgorithmParameterException e) {
-			System.out.println("InvalidAlgorithmParameter for encryption");
+			e.printStackTrace();
+			System.exit(0);
+		} catch (InvalidKeyException e) {
+			e.printStackTrace();
 			System.exit(0);
 		}
+
 		return str;
 	}
 
@@ -103,11 +105,16 @@ public class EncryptHandler {
 
 	/** Takes in name for key file and returns a SecretKey */
 	private SecretKey loadKey(String keyFile) {
-		byte[] keybyte = new byte[16];
+		ByteArrayOutputStream baos = new ByteArrayOutputStream();
 		FileInputStream fin;
+		int i = 0;
 		try {
 			fin = new FileInputStream(keyFile);
-			fin.read(keybyte);
+			while ((i = fin.read()) != -1) {
+				baos.write(i);
+			}
+			fin.close();
+			baos.close();
 		} catch (FileNotFoundException e) {
 			System.out.println("Keyfile not found.");
 			System.exit(0);
@@ -115,7 +122,9 @@ public class EncryptHandler {
 			System.out.println("IOException reading keybyte");
 			System.exit(0);
 		}
-		SecretKey secKey = new SecretKeySpec(keybyte, 0, 16, "AES");
+		byte[] keyBytes = baos.toByteArray();
+		SecretKey secKey = new SecretKeySpec(keyBytes, "AES");
+		System.out.println(secKey.toString());
 		return secKey;
 	}
 }
