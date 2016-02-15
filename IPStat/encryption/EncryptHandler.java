@@ -55,29 +55,23 @@ public class EncryptHandler {
 			cipher.init(Cipher.ENCRYPT_MODE, key, ivParams);
 			byte[] stringBytes = data.getBytes("UTF-8");
 			byte[] bytes = cipher.doFinal(stringBytes);
-			byte[] encBytes = Base64.getEncoder().withoutPadding().encode(bytes);
+			byte[] encBytes = Base64.getEncoder().withoutPadding()
+					.encode(bytes);
 			str = new String(encBytes);
 		} catch (NoSuchAlgorithmException e) {
 			e.printStackTrace();
-			System.exit(0);
 		} catch (NoSuchPaddingException e) {
 			e.printStackTrace();
-			System.exit(0);
 		} catch (IllegalBlockSizeException e) {
 			e.printStackTrace();
-			System.exit(0);
 		} catch (BadPaddingException e) {
 			e.printStackTrace();
-			System.exit(0);
 		} catch (InvalidAlgorithmParameterException e) {
 			e.printStackTrace();
-			System.exit(0);
 		} catch (InvalidKeyException e) {
 			e.printStackTrace();
-			System.exit(0);
 		} catch (UnsupportedEncodingException e) {
 			e.printStackTrace();
-			System.exit(0);
 		}
 
 		return str;
@@ -94,7 +88,10 @@ public class EncryptHandler {
 		}
 	}
 
-	/** Loads a file from fileName and returns as a string. */
+	/**
+	 * Loads a file from fileName, reads the file and returns content as a
+	 * string.
+	 */
 	private String loadFile(String fileName) {
 		String stringFile = "";
 		try {
@@ -103,7 +100,6 @@ public class EncryptHandler {
 			System.out.println("IOException reading file");
 			System.exit(0);
 		}
-		System.out.println(stringFile);
 		return stringFile;
 	}
 

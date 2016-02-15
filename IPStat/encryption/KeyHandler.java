@@ -22,7 +22,7 @@ public class KeyHandler {
 	public KeyHandler() {
 	}
 
-	/** Generates the key and returns it */
+	/** Generates the key, 128 bit AES, and returns it */
 	private SecretKey generateKey() {
 		try {
 			keyGen = KeyGenerator.getInstance("AES");
@@ -32,7 +32,6 @@ public class KeyHandler {
 		}
 		keyGen.init(128);
 		SecretKey secKey = keyGen.generateKey();
-		System.out.println(secKey.toString());
 		return secKey;
 	}
 
@@ -47,7 +46,6 @@ public class KeyHandler {
 			fos.write(key.getEncoded());
 		} catch (FileNotFoundException e) {
 			System.out.println("Can't create outputstream");
-			e.printStackTrace();
 		} catch (IOException e) {
 			System.out.println("Can't write key to file");
 		}

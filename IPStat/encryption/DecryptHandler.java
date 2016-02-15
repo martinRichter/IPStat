@@ -57,25 +57,18 @@ public class DecryptHandler {
 			str = new String(bytes, "UTF-8");
 		} catch (NoSuchAlgorithmException e) {
 			e.printStackTrace();
-			System.exit(0);
 		} catch (NoSuchPaddingException e) {
 			e.printStackTrace();
-			System.exit(0);
 		} catch (InvalidKeyException e) {
 			e.printStackTrace();
-			System.exit(0);
 		} catch (IllegalBlockSizeException e) {
 			e.printStackTrace();
-			System.exit(0);
 		} catch (BadPaddingException e) {
 			e.printStackTrace();
-			System.exit(0);
 		} catch (InvalidAlgorithmParameterException e) {
 			e.printStackTrace();
-			System.exit(0);
 		} catch (UnsupportedEncodingException e) {
 			e.printStackTrace();
-			System.exit(0);
 		}
 		return str;
 	}
@@ -91,7 +84,10 @@ public class DecryptHandler {
 		}
 	}
 
-	/** Loads a file from fileName and returns as a string. */
+	/**
+	 * Loads a file from fileName, reads the file and returns content as a
+	 * string.
+	 */
 	private String loadFile(String fileName) {
 		String stringFile = "";
 		try {
