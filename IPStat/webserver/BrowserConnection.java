@@ -6,6 +6,7 @@ import java.net.URL;
 
 public class BrowserConnection {
 
+	/**Creates a BrowserConnection.*/
 	public BrowserConnection() {
 	}
 

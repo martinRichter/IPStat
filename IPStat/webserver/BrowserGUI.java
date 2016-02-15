@@ -10,7 +10,7 @@ public class BrowserGUI extends JFrame {
 	private BrowserConnection conn;
 
 	/**
-	 * Creates GUI.
+	 * Creates GUI, takes in a BrowserConnection that is used for requests.
 	 */
 	public BrowserGUI(BrowserConnection conn) {
 		this.conn = conn;
@@ -25,7 +25,7 @@ public class BrowserGUI extends JFrame {
 		displayInput(conn.connect(textField.getText()));
 	}
 
-	/** Method for displaying input from server in textArea */
+	/** Method for displaying input from server in textArea, also scrolls to top */
 	public void displayInput(String s) {
 		textArea.setText(s);
 		textArea.setCaretPosition(0);
@@ -60,7 +60,6 @@ public class BrowserGUI extends JFrame {
 
 		panel.add(textField, BorderLayout.PAGE_START);
 		panel.add(scroll, BorderLayout.CENTER);
-		
 
 		this.add(panel);
 		this.setVisible(true);
