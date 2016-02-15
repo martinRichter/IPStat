@@ -52,9 +52,9 @@ public class DecryptHandler {
 			IvParameterSpec ivParams = new IvParameterSpec(iv);
 			cipher.init(Cipher.DECRYPT_MODE, key, ivParams);
 			byte[] stringBytes = data.getBytes();
-			byte[] bytes = cipher.doFinal(stringBytes);
-			Base64.getDecoder().decode(bytes);
-			str = new String(bytes);
+			byte[] decBytes =  Base64.getDecoder().decode(stringBytes);
+			byte[] bytes = cipher.doFinal(decBytes);
+			str = new String(bytes, "UTF-8");
 		} catch (NoSuchAlgorithmException e) {
 			e.printStackTrace();
 			System.exit(0);
@@ -73,6 +73,9 @@ public class DecryptHandler {
 		} catch (InvalidAlgorithmParameterException e) {
 			e.printStackTrace();
 			System.exit(0);
+		} catch (UnsupportedEncodingException e) {
+			e.printStackTrace();
+			System.exit(0);
 		}
 		return str;
 	}
@@ -80,7 +83,8 @@ public class DecryptHandler {
 	/** Takes in a string and fileName and prints to to file with fileName */
 	private void saveFile(String file, String fileName) {
 		try (PrintWriter out = new PrintWriter(fileName)) {
-			out.println(file);
+			out.print(file);
+			out.close();
 		} catch (FileNotFoundException e) {
 			System.out.println("File not found when saving file");
 			System.exit(0);
@@ -120,7 +124,6 @@ public class DecryptHandler {
 		}
 		byte[] keyBytes = baos.toByteArray();
 		SecretKey secKey = new SecretKeySpec(keyBytes, "AES");
-		System.out.println(secKey.toString());
 		return secKey;
 	}
 }

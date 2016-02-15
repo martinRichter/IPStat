@@ -53,10 +53,10 @@ public class EncryptHandler {
 			byte[] iv = new byte[cipher.getBlockSize()];
 			IvParameterSpec ivParams = new IvParameterSpec(iv);
 			cipher.init(Cipher.ENCRYPT_MODE, key, ivParams);
-			byte[] stringBytes = data.getBytes();
-			Base64.getEncoder().encode(stringBytes);
+			byte[] stringBytes = data.getBytes("UTF-8");
 			byte[] bytes = cipher.doFinal(stringBytes);
-			str = new String(bytes);
+			byte[] encBytes = Base64.getEncoder().withoutPadding().encode(bytes);
+			str = new String(encBytes);
 		} catch (NoSuchAlgorithmException e) {
 			e.printStackTrace();
 			System.exit(0);
@@ -75,6 +75,9 @@ public class EncryptHandler {
 		} catch (InvalidKeyException e) {
 			e.printStackTrace();
 			System.exit(0);
+		} catch (UnsupportedEncodingException e) {
+			e.printStackTrace();
+			System.exit(0);
 		}
 
 		return str;
@@ -83,7 +86,8 @@ public class EncryptHandler {
 	/** Takes in a string and fileName and prints to to file with fileName */
 	private void saveFile(String file, String fileName) {
 		try (PrintWriter out = new PrintWriter(fileName)) {
-			out.println(file);
+			out.print(file);
+			out.close();
 		} catch (FileNotFoundException e) {
 			System.out.println("File not found when saving file");
 			System.exit(0);
@@ -124,7 +128,6 @@ public class EncryptHandler {
 		}
 		byte[] keyBytes = baos.toByteArray();
 		SecretKey secKey = new SecretKeySpec(keyBytes, "AES");
-		System.out.println(secKey.toString());
 		return secKey;
 	}
 }

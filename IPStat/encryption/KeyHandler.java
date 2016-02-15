@@ -30,7 +30,7 @@ public class KeyHandler {
 			System.out.println("No such algorithm exists, please try again.");
 			System.exit(0);
 		}
-		keyGen.init(256);
+		keyGen.init(128);
 		SecretKey secKey = keyGen.generateKey();
 		System.out.println(secKey.toString());
 		return secKey;
