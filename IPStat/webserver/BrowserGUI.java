@@ -1,5 +1,7 @@
 import java.awt.*;
 import java.awt.event.ActionEvent;
+import java.io.IOException;
+
 import javax.swing.*;
 
 public class BrowserGUI extends JFrame {
@@ -7,6 +9,7 @@ public class BrowserGUI extends JFrame {
 	private JTextField textField;
 	private JTextArea textArea;
 	private JScrollPane scroll;
+	private JEditorPane jPane;
 	private BrowserConnection conn;
 
 	/**
@@ -23,6 +26,12 @@ public class BrowserGUI extends JFrame {
 	 * displays the result.
 	 */
 	private void buttonClicked() {
+		try {
+			jPane.setPage(textField.getText());
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
 		displayInput(conn.connect(textField.getText()));
 	}
 
@@ -46,6 +55,14 @@ public class BrowserGUI extends JFrame {
 		textField = new JTextField();
 		textArea = new JTextArea();
 		JScrollPane scroll = new JScrollPane(textArea);
+		
+		jPane = null;
+		try {
+			jPane = new JEditorPane("http://people.dsv.su.se/pierre/home/index.cgi");
+		} catch (IOException e1) {
+			// TODO Auto-generated catch block
+			e1.printStackTrace();
+		}
 
 		/**
 		 * Action listener that listens for click and calls buttonClicked().
@@ -60,7 +77,8 @@ public class BrowserGUI extends JFrame {
 		textField.setText("http://people.dsv.su.se/pierre/home/index.cgi");
 
 		panel.add(textField, BorderLayout.PAGE_START);
-		panel.add(scroll, BorderLayout.CENTER);
+//		panel.add(scroll, BorderLayout.CENTER);
+		panel.add(jPane, BorderLayout.CENTER);
 
 		this.add(panel);
 		this.setVisible(true);
