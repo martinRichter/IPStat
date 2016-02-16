@@ -18,7 +18,7 @@ public class KeyHandler {
 
 	private KeyGenerator keyGen;
 
-	/** Creates KeyHandler */
+	/** Creates KeyHandler. */
 	public KeyHandler() {
 	}
 
