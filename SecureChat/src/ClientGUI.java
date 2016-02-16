@@ -11,12 +11,14 @@ public class ClientGUI extends JFrame {
 	private JTextArea textArea;
 	private JScrollPane scroll;
 	private PrintWriter out;
+	private SecurityHandler secH;
 
 	/**
 	 * Creates GUI, takes in a PrintWriter.
 	 */
-	public ClientGUI(PrintWriter out) {
+	public ClientGUI(PrintWriter out, SecurityHandler secH) {
 		createGUI();
+		this.secH = secH;
 		this.out = out;
 	}
 
@@ -24,7 +26,7 @@ public class ClientGUI extends JFrame {
 	 * Retrieves input to TextField & sends to PrintWriter.
 	 */
 	private void buttonClicked() {
-		out.println(textField.getText());
+		out.println(secH.encrypt(textField.getText()));
 		textField.setText("");
 	}
 

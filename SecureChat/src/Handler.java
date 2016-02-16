@@ -1,5 +1,14 @@
-import javax.crypto.SecretKey;
+import java.io.BufferedReader;
+import java.io.IOException;
+import java.io.InputStreamReader;
+import java.io.OutputStreamWriter;
+import java.io.PrintWriter;
+import java.io.UnsupportedEncodingException;
+import java.net.InetAddress;
+import java.net.Socket;
+import java.net.UnknownHostException;
 
+import javax.crypto.SecretKey;
 
 public class Handler implements Runnable {
 	Thread t = new Thread(this);
@@ -7,36 +16,59 @@ public class Handler implements Runnable {
 	private Connection conn;
 	private ClientGUI GUI;
 	private KeyGUI keyGUI;
-	
-	public Handler(){
-		
+	private Socket socket;
+	private SecurityHandler secH;
+
+	public Handler() {
+		createSocket();
+		createConnection();
+		keyGUI = new KeyGUI();
+		secH = new SecurityHandler(keyGUI.getKey());
+		createGUI(secH);
+		t.start();
 	}
 
 	@Override
 	public void run() {
-		// TODO Auto-generated method stub
+		while (true) {
+			try {
+				GUI.displayInput(secH.decrypt(conn.getText()));
+			} catch (IOException e) {
+				System.out.println("Connection to server lost.");
+			}
+		}
 	}
 
-	private String encrypt(String s){
-		// TODO
-		return "";
+	private void createSocket() {
+		int port = 9494;
+		InetAddress host;
+		try {
+			host = InetAddress.getByName("atlas.dsv.su.se");
+			socket = new Socket(host, port);
+		} catch (UnknownHostException e) {
+			e.printStackTrace();
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
 	}
-	
-	private String decrypt(String s){
-		// TODO
-		return "";
+
+	private void createGUI(SecurityHandler secH) {
+		try {
+			GUI = new ClientGUI(new PrintWriter(new OutputStreamWriter(
+					socket.getOutputStream(), "ISO-8859-1"), true), secH);
+		} catch (UnsupportedEncodingException e) {
+			e.printStackTrace();
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
 	}
-	
-	public void display(String s){
-		GUI.displayInput(decrypt(s));
-		// TODO
-	}
-	
-	public void send(String s){
-		// TODO
-	}
-	
-	private void selectKey(){
-		// TODO
+
+	private void createConnection() {
+		try {
+			conn = new Connection(new BufferedReader(new InputStreamReader(
+					socket.getInputStream())));
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
 	}
 }
