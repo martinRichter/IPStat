@@ -8,10 +8,10 @@ import java.net.URL;
 
 import javax.swing.*;
 
-public class BrowserGUI extends JFrame {
+public class Browser extends JFrame {
 
 	public static void main(String[] args) {
-		new BrowserGUI();
+		new Browser();
 	}
 
 	private JPanel panel;
@@ -22,7 +22,7 @@ public class BrowserGUI extends JFrame {
 	/**
 	 * Creates GUI and calls buttonClicked in order to load the default page.
 	 */
-	public BrowserGUI() {
+	public Browser() {
 		createGUI();
 		buttonClicked();
 	}
