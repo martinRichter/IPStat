@@ -40,13 +40,6 @@ public class Browser extends JFrame {
 		}
 	}
 
-	// /** Method for displaying input from server in textArea, also scrolls to
-	// top */
-	// public void displayInput(String s) {
-	// textArea.setText(s);
-	// textArea.setCaretPosition(0);
-	// }
-
 	/**
 	 * Tries to connect to URL provided and returns string. Adds result to
 	 * string and adds error messages if exceptions are thrown.
