@@ -1,44 +1,75 @@
 import java.awt.*;
 import java.awt.event.ActionEvent;
+import java.io.BufferedReader;
 import java.io.IOException;
+import java.io.InputStreamReader;
+import java.net.MalformedURLException;
+import java.net.URL;
 
 import javax.swing.*;
 
 public class BrowserGUI extends JFrame {
+
+	public static void main(String[] args) {
+		new BrowserGUI();
+	}
+
 	private JPanel panel;
 	private JTextField textField;
-	private JTextArea textArea;
 	private JScrollPane scroll;
 	private JEditorPane jPane;
-	private BrowserConnection conn;
 
 	/**
-	 * Creates GUI, takes in a BrowserConnection that is used for requests.
+	 * Creates GUI and calls buttonClicked in order to load the default page.
 	 */
-	public BrowserGUI(BrowserConnection conn) {
-		this.conn = conn;
+	public BrowserGUI() {
 		createGUI();
 		buttonClicked();
 	}
 
 	/**
 	 * Retrieves input from TextField, requests webpage from connection and
-	 * displays the result.
+	 * displays the result. If an IOException occurs, calls connect in order to
+	 * get text representation or error messages displayed.
 	 */
 	private void buttonClicked() {
 		try {
 			jPane.setPage(textField.getText());
 		} catch (IOException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
+			jPane.setText(connect(textField.getText()));
 		}
-		displayInput(conn.connect(textField.getText()));
 	}
 
-	/** Method for displaying input from server in textArea, also scrolls to top */
-	public void displayInput(String s) {
-		textArea.setText(s);
-		textArea.setCaretPosition(0);
+	// /** Method for displaying input from server in textArea, also scrolls to
+	// top */
+	// public void displayInput(String s) {
+	// textArea.setText(s);
+	// textArea.setCaretPosition(0);
+	// }
+
+	/**
+	 * Tries to connect to URL provided and returns string. Adds result to
+	 * string and adds error messages if exceptions are thrown.
+	 */
+	private String connect(String urlString) {
+		StringBuffer buffer = new StringBuffer();
+		String line = "";
+		String text = "";
+		URL url;
+		try {
+			url = new URL(urlString);
+			BufferedReader br = new BufferedReader(new InputStreamReader(
+					url.openStream()));
+			while ((line = br.readLine()) != null) {
+				buffer.append(line + "\n");
+			}
+			text = buffer.toString();
+		} catch (MalformedURLException e) {
+			text += ("ERROR: MalformedURL");
+		} catch (IOException e) {
+			text += ("ERROR: IOException");
+		}
+		return text;
 	}
 
 	/**
@@ -53,16 +84,8 @@ public class BrowserGUI extends JFrame {
 		panel.setLayout(new BorderLayout());
 
 		textField = new JTextField();
-		textArea = new JTextArea();
-		JScrollPane scroll = new JScrollPane(textArea);
-		
-		jPane = null;
-		try {
-			jPane = new JEditorPane("http://people.dsv.su.se/pierre/home/index.cgi");
-		} catch (IOException e1) {
-			// TODO Auto-generated catch block
-			e1.printStackTrace();
-		}
+		jPane = new JEditorPane();
+		JScrollPane scroll = new JScrollPane(jPane);
 
 		/**
 		 * Action listener that listens for click and calls buttonClicked().
@@ -77,8 +100,7 @@ public class BrowserGUI extends JFrame {
 		textField.setText("http://people.dsv.su.se/pierre/home/index.cgi");
 
 		panel.add(textField, BorderLayout.PAGE_START);
-//		panel.add(scroll, BorderLayout.CENTER);
-		panel.add(jPane, BorderLayout.CENTER);
+		panel.add(scroll, BorderLayout.CENTER);
 
 		this.add(panel);
 		this.setVisible(true);
