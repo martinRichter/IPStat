@@ -48,7 +48,7 @@ public class ClientGUI extends JFrame {
 
 		textField = new JTextField();
 		textArea = new JTextArea();
-		JScrollPane scroll = new JScrollPane(textArea);
+		scroll = new JScrollPane(textArea);
 
 		/**
 		 * Action listener that listens for click and calls buttonClicked().
