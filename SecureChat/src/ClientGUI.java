@@ -1,7 +1,5 @@
 import java.awt.*;
 import java.awt.event.ActionEvent;
-import java.io.PrintWriter;
-
 import javax.swing.*;
 import javax.swing.text.DefaultCaret;
 
@@ -10,23 +8,21 @@ public class ClientGUI extends JFrame {
 	private JTextField textField;
 	private JTextArea textArea;
 	private JScrollPane scroll;
-	private PrintWriter out;
-	private SecurityHandler secH;
+	private Handler handler;
 
 	/**
 	 * Creates GUI, takes in a PrintWriter.
 	 */
-	public ClientGUI(PrintWriter out, SecurityHandler secH) {
+	public ClientGUI(Handler handler) {
 		createGUI();
-		this.secH = secH;
-		this.out = out;
+		this.handler = handler;
 	}
 
 	/**
-	 * Retrieves input to TextField & sends to PrintWriter.
+	 * Retrieves input to TextField & sends handler.
 	 */
 	private void buttonClicked() {
-//		out.println(secH.encrypt(textField.getText()));
+		handler.send(textField.getText());
 		textField.setText("");
 	}
 
@@ -37,8 +33,8 @@ public class ClientGUI extends JFrame {
 	}
 
 	/** Method for setting windows title */
-	public void setWindowTitle(String host, String port) {
-		setTitle("Connected to: " + host + " via port: " + port);
+	public void setWindowTitle(String s) {
+		setTitle(s);
 	}
 
 	private void createGUI() {
@@ -56,7 +52,6 @@ public class ClientGUI extends JFrame {
 		 * Action listener that listens for click and calls buttonClicked().
 		 */
 		Action action = new AbstractAction() {
-			@Override
 			public void actionPerformed(ActionEvent e) {
 				buttonClicked();
 			}
