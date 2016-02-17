@@ -1,23 +1,41 @@
 import java.io.ByteArrayOutputStream;
+import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.IOException;
 
 import javax.crypto.SecretKey;
 import javax.crypto.spec.SecretKeySpec;
-
+import javax.swing.JFileChooser;
+import javax.swing.JOptionPane;
 
 public class KeyGUI {
-	
-	public KeyGUI (){
-		
+	private JFileChooser fileChooser;
+
+	public KeyGUI() {
 	}
 	
-	public SecretKey getKey(){
-		return loadKey("key");
+	/**Method for getting key, calls chooseFile and retrieveKey*/
+	public SecretKey getKey() {
+		return retrieveKey(chooseFile());
 	}
-	
-	private SecretKey loadKey(String keyFile){
+
+	/** Opens a JFileChoose to select key. Returns file. */
+	private File chooseFile() {
+		fileChooser = new JFileChooser();
+		fileChooser.setCurrentDirectory(new File("."));
+		int result = fileChooser.showOpenDialog(fileChooser);
+		if (result == JFileChooser.APPROVE_OPTION) {
+			return fileChooser.getSelectedFile();
+		} else {
+			JOptionPane
+					.showMessageDialog(null, "File not approved, try again.");
+			return chooseFile();
+		}
+	}
+
+	/**Takes in a file and reads it to a key which it returns.*/
+	private SecretKey retrieveKey(File keyFile) {
 		ByteArrayOutputStream baos = new ByteArrayOutputStream();
 		FileInputStream fin;
 		int i = 0;
@@ -29,11 +47,12 @@ public class KeyGUI {
 			fin.close();
 			baos.close();
 		} catch (FileNotFoundException e) {
-			System.out.println("Keyfile not found.");
-			System.exit(0);
+			JOptionPane.showMessageDialog(null, "File not found, try again.");
+			return getKey();
 		} catch (IOException e) {
-			System.out.println("IOException reading keybyte");
-			System.exit(0);
+			JOptionPane.showMessageDialog(null,
+					"IOException reading key, try again.");
+			return getKey();
 		}
 		byte[] keyBytes = baos.toByteArray();
 		SecretKey secKey = new SecretKeySpec(keyBytes, "AES");

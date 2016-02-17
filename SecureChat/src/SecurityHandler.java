@@ -22,6 +22,17 @@ public class SecurityHandler {
 	public SecurityHandler(SecretKey key) {
 		this.key = key;
 	}
+	
+	public void test (){
+		String plain = "testString";
+		String enc = encrypt(plain);
+		System.out.println("Enc: " + enc);
+		String dec = decrypt(enc);
+		System.out.println("Dec: " + dec);
+		if (plain.equals(dec)){
+			System.out.println("SUCCES, KEY WORKS FOR ENCRYPTION/DECRYPTION :D");
+		}
+	}
 
 
 	public String decrypt(String data) {
