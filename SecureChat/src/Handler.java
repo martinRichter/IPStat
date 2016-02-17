@@ -8,34 +8,43 @@ import java.net.InetAddress;
 import java.net.Socket;
 import java.net.UnknownHostException;
 
+import javax.crypto.SealedObject;
 import javax.crypto.SecretKey;
 
 public class Handler implements Runnable {
 	Thread t = new Thread(this);
 	private SecurityHandler secH;
 	private Connection conn;
-
+	private ClientGUI GUI;
 
 	public Handler(SecurityHandler secH, InetAddress host, int port) {
 		this.secH = secH;
+		GUI = new ClientGUI(this);
 		conn = new Connection(host, port);
 		t.start();
 	}
 
 	@Override
-	public void run() {
+	public synchronized void run() {
+		Object obj;
+		SealedObject sObj;
+		String str;
 		while (true) {
-//			try {
-//				GUI.displayInput(secH.decrypt(conn.getText()));
-//			} catch (IOException e) {
-//				System.out.println("Connection to server lost.");
-//			}
+			System.out.println("tries to getText");
+			try {
+				GUI.displayInput(conn.getText());
+			} catch (IOException e) {
+				e.printStackTrace();
+			}
+			// if ((obj = conn.getObject()) != null) {
+			// sObj = (SealedObject) obj;
+			// GUI.displayInput(secH.unSeal(sObj));
+			// }
 		}
 	}
 
-
-	public void send(String text) {
-		// TODO Auto-generated method stub
-		
+	public synchronized void send(String text) {
+		// Object obj = secH.seal(text);
+		conn.send(text);
 	}
 }

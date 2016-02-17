@@ -22,8 +22,10 @@ public class ClientGUI extends JFrame {
 	 * Retrieves input to TextField & sends handler.
 	 */
 	private void buttonClicked() {
-		handler.send(textField.getText());
-		textField.setText("");
+		if (textField.getText().length() != 0) {
+			handler.send(textField.getText());
+			textField.setText("");
+		}
 	}
 
 	/** Method for displaying input from server in textArea */
@@ -32,15 +34,15 @@ public class ClientGUI extends JFrame {
 		textArea.validate();
 	}
 
-	/** Method for setting windows title */
-	public void setWindowTitle(String s) {
-		setTitle(s);
-	}
+	// /** Method for setting windows title */
+	// public void setWindowTitle(String s) {
+	// setTitle(s);
+	// }
 
 	private void createGUI() {
 		setSize(300, 300);
 
-		//BorderLayout so the fields adapt to window size
+		// BorderLayout so the fields adapt to window size
 		panel = new JPanel();
 		panel.setLayout(new BorderLayout());
 
@@ -59,9 +61,9 @@ public class ClientGUI extends JFrame {
 		textField.addActionListener(action);
 
 		textArea.setLineWrap(true);
-		
-		//To make the textArea go to the bottom
-		DefaultCaret caret = (DefaultCaret)textArea.getCaret();
+
+		// To make the textArea go to the bottom
+		DefaultCaret caret = (DefaultCaret) textArea.getCaret();
 		caret.setUpdatePolicy(DefaultCaret.ALWAYS_UPDATE);
 
 		panel.add(textField, BorderLayout.PAGE_START);
