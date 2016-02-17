@@ -12,19 +12,13 @@ import javax.crypto.SecretKey;
 
 public class Handler implements Runnable {
 	Thread t = new Thread(this);
-	private SecretKey secKey;
-	private Connection conn;
-	private ClientGUI GUI;
-	private KeyGUI keyGUI;
-	private Socket socket;
 	private SecurityHandler secH;
+	private Connection conn;
 
-	public Handler() {
-		createSocket();
-		createConnection();
-		keyGUI = new KeyGUI();
-		secH = new SecurityHandler(keyGUI.getKey());
-		createGUI(secH);
+
+	public Handler(SecurityHandler secH, InetAddress host, int port) {
+		this.secH = secH;
+		conn = new Connection(host, port);
 		t.start();
 	}
 
@@ -39,36 +33,9 @@ public class Handler implements Runnable {
 		}
 	}
 
-	private void createSocket() {
-		int port = 9494;
-		InetAddress host;
-		try {
-			host = InetAddress.getByName("atlas.dsv.su.se");
-			socket = new Socket(host, port);
-		} catch (UnknownHostException e) {
-			e.printStackTrace();
-		} catch (IOException e) {
-			e.printStackTrace();
-		}
-	}
 
-	private void createGUI(SecurityHandler secH) {
-		try {
-			GUI = new ClientGUI(new PrintWriter(new OutputStreamWriter(
-					socket.getOutputStream()), true), secH);
-		} catch (UnsupportedEncodingException e) {
-			e.printStackTrace();
-		} catch (IOException e) {
-			e.printStackTrace();
-		}
-	}
-
-	private void createConnection() {
-		try {
-			conn = new Connection(new BufferedReader(new InputStreamReader(
-					socket.getInputStream())));
-		} catch (IOException e) {
-			e.printStackTrace();
-		}
+	public void send(String text) {
+		// TODO Auto-generated method stub
+		
 	}
 }
