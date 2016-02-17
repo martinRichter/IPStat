@@ -26,7 +26,7 @@ public class ClientGUI extends JFrame {
 	 * Retrieves input to TextField & sends to PrintWriter.
 	 */
 	private void buttonClicked() {
-		out.println(secH.encrypt(textField.getText()));
+//		out.println(secH.encrypt(textField.getText()));
 		textField.setText("");
 	}
 

@@ -31,11 +31,11 @@ public class Handler implements Runnable {
 	@Override
 	public void run() {
 		while (true) {
-			try {
-				GUI.displayInput(secH.decrypt(conn.getText()));
-			} catch (IOException e) {
-				System.out.println("Connection to server lost.");
-			}
+//			try {
+//				GUI.displayInput(secH.decrypt(conn.getText()));
+//			} catch (IOException e) {
+//				System.out.println("Connection to server lost.");
+//			}
 		}
 	}
 
@@ -55,7 +55,7 @@ public class Handler implements Runnable {
 	private void createGUI(SecurityHandler secH) {
 		try {
 			GUI = new ClientGUI(new PrintWriter(new OutputStreamWriter(
-					socket.getOutputStream(), "ISO-8859-1"), true), secH);
+					socket.getOutputStream()), true), secH);
 		} catch (UnsupportedEncodingException e) {
 			e.printStackTrace();
 		} catch (IOException e) {
