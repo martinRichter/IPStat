@@ -25,10 +25,10 @@ public class Handler implements Runnable {
 	}
 
 	@Override
-	public synchronized void run() {
-		Object obj;
-		SealedObject sObj;
-		String str;
+	public void run() {
+//		Object obj;
+//		SealedObject sObj;
+//		String str;
 		while (true) {
 			System.out.println("tries to getText");
 			try {
@@ -43,7 +43,7 @@ public class Handler implements Runnable {
 		}
 	}
 
-	public synchronized void send(String text) {
+	public void send(String text) {
 		// Object obj = secH.seal(text);
 		conn.send(text);
 	}

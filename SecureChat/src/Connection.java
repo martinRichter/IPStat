@@ -78,6 +78,7 @@ public class Connection implements Runnable {
 	}
 
 	public void send(String text) {
+		System.out.println("Send in conn called with: " + text);
 		out.println(text);
 	}
 
