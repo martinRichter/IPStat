@@ -23,7 +23,6 @@ public class ClientGUI extends JFrame {
 	 */
 	private void buttonClicked() {
 		if (textField.getText().length() != 0) {
-			System.out.println(textField.getText());
 			handler.send(textField.getText());
 			textField.setText("");
 		}

@@ -28,11 +28,12 @@ public class Handler implements Runnable {
 	public void run() {
 //		Object obj;
 //		SealedObject sObj;
-//		String str;
+		String str;
 		while (true) {
-			System.out.println("tries to getText");
 			try {
-				GUI.displayInput(conn.getText());
+				str = conn.getText();
+				System.out.println(str);
+				GUI.displayInput(secH.decryptString(str));
 			} catch (IOException e) {
 				e.printStackTrace();
 			}
@@ -45,6 +46,6 @@ public class Handler implements Runnable {
 
 	public void send(String text) {
 		// Object obj = secH.seal(text);
-		conn.send(text);
+		conn.send(secH.encryptString(text));
 	}
 }

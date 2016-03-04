@@ -25,6 +25,14 @@ public class SecurityHandler {
 	public SecurityHandler(SecretKey key) {
 		this.key = key;
 		initCiphers();
+		testCiphers();
+	}
+
+	private void testCiphers() {
+		String str = "test";
+		String enc = encryptString(str);
+		System.out.println("Enc: " + enc);
+		System.out.println("Dec: " + decryptString(enc));
 	}
 
 	/**Takes in a string and returns a sealed object, encrypted with the SecretKey key.*/

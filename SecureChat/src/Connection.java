@@ -29,7 +29,7 @@ public class Connection implements Runnable {
 			in = new BufferedReader(new InputStreamReader(
 					socket.getInputStream()));
 			out = new PrintWriter(new OutputStreamWriter(
-					socket.getOutputStream(), "ISO-8859-1"), true);
+					socket.getOutputStream()), true);
 		} catch (IOException e) {
 			e.printStackTrace();
 		}
@@ -78,7 +78,6 @@ public class Connection implements Runnable {
 	}
 
 	public void send(String text) {
-		System.out.println("Send in conn called with: " + text);
 		out.println(text);
 	}
 
