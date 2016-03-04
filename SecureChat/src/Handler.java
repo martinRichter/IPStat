@@ -26,14 +26,20 @@ public class Handler implements Runnable {
 
 	@Override
 	public void run() {
-//		Object obj;
-//		SealedObject sObj;
+		// Object obj;
+		// SealedObject sObj;
 		String str;
+		int pos;
 		while (true) {
 			try {
 				str = conn.getText();
-				System.out.println(str);
-				GUI.displayInput(secH.decryptString(str));
+				if (str.contains("SECRET")) {
+					pos = str.indexOf("SECRET");
+					str = str.substring(0, pos - 1)
+							+ secH.decryptString(str.substring(pos + 6,
+									str.length()));
+				}
+				GUI.displayInput(str);
 			} catch (IOException e) {
 				e.printStackTrace();
 			}
@@ -44,8 +50,12 @@ public class Handler implements Runnable {
 		}
 	}
 
+	/**
+	 * Send the string with word SECRET infront so receiver can differ messages
+	 * from the server and messages for a secure client
+	 */
 	public void send(String text) {
 		// Object obj = secH.seal(text);
-		conn.send(secH.encryptString(text));
+		conn.send("SECRET" + secH.encryptString(text));
 	}
 }

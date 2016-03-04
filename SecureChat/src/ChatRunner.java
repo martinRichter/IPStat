@@ -12,11 +12,13 @@ public class ChatRunner {
 	
 		InetAddress host = null;
 		try {
+//			host = InetAddress.getByName("atlas.dsv.su.se");
 			host = InetAddress.getByName("localhost");
 		} catch (UnknownHostException e) {
 			e.printStackTrace();
 		}
 		int port = 2000;
+//		int port = 9494;
 		
 		Handler handler = new Handler(secH, host, port);
 	}
