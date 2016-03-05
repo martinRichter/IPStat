@@ -18,6 +18,13 @@ public class ConnectionHandler implements Runnable {
 		this.hostPort = hostPort;
 	}
 
+	/**
+	 * While running it receives packets, creates a string of the received data,
+	 * splits into to a string array. Parses the x value and parses the y value
+	 * as well as triming the string, since there are white spaces added after
+	 * the y value.
+	 * Adds a new point using the x and y value using addPoint.
+	 */
 	@Override
 	public void run() {
 		byte[] receiveData = new byte[32];
@@ -29,7 +36,6 @@ public class ConnectionHandler implements Runnable {
 				socket.receive(receivePacket);
 				String str = new String(receiveData);
 				xy = str.split(" ");
-				// Trim y value as whitespaces are added after the y value.
 				draw.addPoint(new Point(Integer.parseInt(xy[0]), Integer
 						.parseInt(xy[1].trim())));
 			} catch (IOException e) {
@@ -37,6 +43,10 @@ public class ConnectionHandler implements Runnable {
 		}
 	}
 
+	/**
+	 * Method for sending point. Creates a byte array with the x and y values,
+	 * packs into a datagam packet and sends it.
+	 */
 	public void sendPoint(Point p) {
 		byte[] data = new byte[32];
 		String message = Integer.toString(p.x) + " " + Integer.toString(p.y);
