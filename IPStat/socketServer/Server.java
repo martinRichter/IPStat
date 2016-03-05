@@ -14,6 +14,10 @@ public class Server implements Runnable {
 		this.GUI = GUI;
 	}
 
+	/**
+	 * Renoves client from ArrayList and alerts all connected clients that
+	 * client was disconnected.
+	 */
 	public synchronized void removeClient(ClientHandler client) {
 		if (connections.remove(client)) {
 			String str = client.getHostName() + " was disconnected.";
@@ -22,19 +26,24 @@ public class Server implements Runnable {
 		}
 	}
 
+	/** Method for telling a connected client about all connected clients. */
 	public synchronized void who(ClientHandler client) {
 		GUI.display(client.getHostName() + "requested to know connections");
 		String str = "";
-		for (ClientHandler cli : connections){
+		for (ClientHandler cli : connections) {
 			str = str + cli.getHostName() + " ";
 		}
 		client.send("Connected clients are: " + str);
 	}
 
+	/**
+	 * Method for broadcasting a message to all clients showing the origin.
+	 */
 	public synchronized void broadcast(String host, String inputLine) {
 		sendAll(host + ": " + inputLine);
 	}
 
+	/** Method for sending a string to all connected clients. */
 	private synchronized void sendAll(String s) {
 		GUI.display(s);
 		for (ClientHandler client : connections) {
@@ -42,6 +51,10 @@ public class Server implements Runnable {
 		}
 	}
 
+	/**
+	 * While thread is running it checks for new connections and adds them to
+	 * the arrayList of ClientHandlers.
+	 */
 	@Override
 	public void run() {
 		Socket socket;

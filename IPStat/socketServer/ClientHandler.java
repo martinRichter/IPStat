@@ -11,7 +11,7 @@ class ClientHandler implements Runnable {
 	private Socket socket;
 	private String host;
 	private PrintWriter out;
-	
+
 	public ClientHandler(Socket s, Server server) {
 		this.socket = s;
 		this.server = server;
@@ -19,6 +19,11 @@ class ClientHandler implements Runnable {
 		t.start();
 	}
 
+	/**
+	 * First creates bufferedReader and printWriter. While running it checks for
+	 * input and broadcasts it unless the input is wwhhoo, then calls
+	 * who-method.
+	 */
 	public void run() {
 		BufferedReader in = null;
 		try {
