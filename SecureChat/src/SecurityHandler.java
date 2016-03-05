@@ -27,7 +27,6 @@ public class SecurityHandler {
 		initCiphers();
 	}
 
-
 	/**
 	 * Takes in a string and returns a sealed object, encrypted with the
 	 * SecretKey key.
@@ -76,11 +75,14 @@ public class SecurityHandler {
 
 	}
 
-	public String decryptString(String data) {
+	/**
+	 * Method for decrypting string. Retrieves bytes, decodes it and decrypts
+	 * and returns the orginal string.
+	 */
+	public String decryptString(String encData) {
 		String str = "";
-
 		try {
-			byte[] stringBytes = data.getBytes();
+			byte[] stringBytes = encData.getBytes();
 			byte[] decBytes = Base64.getDecoder().decode(stringBytes);
 			byte[] bytes = decCipher.doFinal(decBytes);
 			str = new String(bytes, "UTF-8");
@@ -88,10 +90,13 @@ public class SecurityHandler {
 				| UnsupportedEncodingException e) {
 			e.printStackTrace();
 		}
-
 		return str;
 	}
 
+	/**
+	 * Method for encyrpting a string. Takes in a string and encodes it before
+	 * encrypting it. Returns an encrypted string.
+	 */
 	public String encryptString(String data) {
 		String str = "";
 		try {

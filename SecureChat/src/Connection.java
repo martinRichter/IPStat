@@ -15,12 +15,9 @@ public class Connection implements Runnable {
 	private PrintWriter out;
 	private BufferedReader in;
 
-	// private ObjectInputStream in;
-	// private ObjectOutputStream out;
-
 	/**
 	 * Takes in an InetAddres and a port, tries to create socket, inputstream
-	 * and outputstream
+	 * and outputstream. Also starts running the thread.
 	 */
 	public Connection(InetAddress host, int port) {
 
@@ -36,37 +33,6 @@ public class Connection implements Runnable {
 		t.start();
 	}
 
-	// out = new ObjectOutputStream(socket.getOutputStream());
-	// } catch (IOException e) {
-	// e.printStackTrace();
-	// }
-	// try {
-	// System.out.println("Trying to create input");
-	// in = new ObjectInputStream(socket.getInputStream());
-	// System.out.println("Input created.");
-	// } catch (IOException e) {
-	// // TODO Auto-generated catch block
-	// e.printStackTrace();
-	// }
-	// /**Takes in an object and sends to socket.*/
-	// public void send(Object obj){
-	// try {
-	// out.writeObject(obj);
-	// } catch (IOException e) {
-	// e.printStackTrace();
-	// }
-	// }
-	//
-	// /**Reads object from socket.*/
-	// public Object getObject(){
-	// try {
-	// return in.readObject();
-	// } catch (ClassNotFoundException | IOException e) {
-	// e.printStackTrace();
-	// return null;
-	// }
-	// }
-
 	@Override
 	public void run() {
 		while (alive) {
@@ -77,10 +43,12 @@ public class Connection implements Runnable {
 		alive = false;
 	}
 
+	/** Method for sending text to server via socket. */
 	public void send(String text) {
 		out.println(text);
 	}
 
+	/** Method for retrieving input from socket. */
 	public String getText() throws IOException {
 		return in.readLine();
 	}

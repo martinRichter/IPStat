@@ -24,10 +24,15 @@ public class Handler implements Runnable {
 		t.start();
 	}
 
+	/**
+	 * Method running the thread. If a messages is received from server, it
+	 * checks if the message contains the word SECRET, which means it is an
+	 * encrypted message. If it was encrypted, it decrypts the part of the
+	 * message that's encrypted and then displays the decrypted message as well
+	 * as the sender.
+	 */
 	@Override
 	public void run() {
-		// Object obj;
-		// SealedObject sObj;
 		String str;
 		int pos;
 		while (true) {
@@ -43,19 +48,19 @@ public class Handler implements Runnable {
 			} catch (IOException e) {
 				e.printStackTrace();
 			}
-			// if ((obj = conn.getObject()) != null) {
-			// sObj = (SealedObject) obj;
-			// GUI.displayInput(secH.unSeal(sObj));
-			// }
 		}
 	}
 
 	/**
 	 * Send the string with word SECRET infront so receiver can differ messages
-	 * from the server and messages for a secure client
+	 * from the server and messages for a secure client. If the text is wwhhoo,
+	 * message is sent unencrypted as it is a message to the server.
 	 */
 	public void send(String text) {
-		// Object obj = secH.seal(text);
-		conn.send("SECRET" + secH.encryptString(text));
+		if (text.equals("wwhhoo")) {
+			conn.send(text);
+		} else {
+			conn.send(" SECRET" + secH.encryptString(text));
+		}
 	}
 }
