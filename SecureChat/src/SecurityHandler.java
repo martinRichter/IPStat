@@ -25,17 +25,13 @@ public class SecurityHandler {
 	public SecurityHandler(SecretKey key) {
 		this.key = key;
 		initCiphers();
-		testCiphers();
 	}
 
-	private void testCiphers() {
-		String str = "test";
-		String enc = encryptString(str);
-		System.out.println("Enc: " + enc);
-		System.out.println("Dec: " + decryptString(enc));
-	}
 
-	/**Takes in a string and returns a sealed object, encrypted with the SecretKey key.*/
+	/**
+	 * Takes in a string and returns a sealed object, encrypted with the
+	 * SecretKey key.
+	 */
 	public SealedObject seal(String s) {
 		try {
 			return new SealedObject(s, encCipher);
@@ -45,7 +41,7 @@ public class SecurityHandler {
 		}
 	}
 
-	/**Takes in a sealed object, unseals and decrypts it and returns a string.*/
+	/** Takes in a sealed object, unseals and decrypts it and returns a string. */
 	public String unSeal(SealedObject so) {
 		try {
 			return (String) so.getObject(key);
@@ -56,7 +52,7 @@ public class SecurityHandler {
 		}
 	}
 
-	/**Method for initiating ciphers for encryption and decryption*/
+	/** Method for initiating ciphers for encryption and decryption */
 	private void initCiphers() {
 		try {
 			encCipher = Cipher.getInstance("AES/CBC/PKCS5Padding");
@@ -81,21 +77,14 @@ public class SecurityHandler {
 	}
 
 	public String decryptString(String data) {
-		Cipher cipher;
 		String str = "";
 
 		try {
-			cipher = Cipher.getInstance("AES/CBC/PKCS5Padding");
-			byte[] iv = new byte[cipher.getBlockSize()];
-			IvParameterSpec ivParams = new IvParameterSpec(iv);
-			cipher.init(Cipher.DECRYPT_MODE, key, ivParams);
 			byte[] stringBytes = data.getBytes();
 			byte[] decBytes = Base64.getDecoder().decode(stringBytes);
-			byte[] bytes = cipher.doFinal(decBytes);
+			byte[] bytes = decCipher.doFinal(decBytes);
 			str = new String(bytes, "UTF-8");
-		} catch (NoSuchAlgorithmException | NoSuchPaddingException
-				| InvalidKeyException | InvalidAlgorithmParameterException
-				| IllegalBlockSizeException | BadPaddingException
+		} catch (IllegalBlockSizeException | BadPaddingException
 				| UnsupportedEncodingException e) {
 			e.printStackTrace();
 		}
@@ -104,21 +93,14 @@ public class SecurityHandler {
 	}
 
 	public String encryptString(String data) {
-		Cipher cipher;
 		String str = "";
 		try {
-			cipher = Cipher.getInstance("AES/CBC/PKCS5Padding");
-			byte[] iv = new byte[cipher.getBlockSize()];
-			IvParameterSpec ivParams = new IvParameterSpec(iv);
-			cipher.init(Cipher.ENCRYPT_MODE, key, ivParams);
 			byte[] stringBytes = data.getBytes("UTF-8");
-			byte[] bytes = cipher.doFinal(stringBytes);
+			byte[] bytes = encCipher.doFinal(stringBytes);
 			byte[] encBytes = Base64.getEncoder().withoutPadding()
 					.encode(bytes);
 			str = new String(encBytes);
-		} catch (NoSuchAlgorithmException | NoSuchPaddingException
-				| InvalidKeyException | InvalidAlgorithmParameterException
-				| IllegalBlockSizeException | BadPaddingException
+		} catch (IllegalBlockSizeException | BadPaddingException
 				| UnsupportedEncodingException e) {
 			e.printStackTrace();
 		}
