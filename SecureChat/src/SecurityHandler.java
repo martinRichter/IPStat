@@ -29,7 +29,8 @@ public class SecurityHandler {
 
 	/**
 	 * Takes in a string and returns a sealed object, encrypted with the
-	 * SecretKey key.
+	 * SecretKey key. Application uses encryptString but this method could be
+	 * used in an extension of the application.
 	 */
 	public SealedObject seal(String s) {
 		try {
@@ -40,7 +41,11 @@ public class SecurityHandler {
 		}
 	}
 
-	/** Takes in a sealed object, unseals and decrypts it and returns a string. */
+	/**
+	 * Takes in a sealed object, unseals and decrypts it and returns a string.
+	 * Application uses decryptString but this method could be used in an
+	 * extension of the application.
+	 */
 	public String unSeal(SealedObject so) {
 		try {
 			return (String) so.getObject(key);
