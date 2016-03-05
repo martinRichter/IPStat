@@ -29,8 +29,9 @@ public class Browser extends JFrame {
 
 	/**
 	 * Retrieves input from TextField, requests webpage from connection and
-	 * displays the result. If an IOException occurs, calls connect in order to
-	 * get text representation or error messages displayed.
+	 * displays the result using a JEditoPane. If an IOException occurs, calls
+	 * the method connect in order to get text representation or error messages
+	 * displayed.
 	 */
 	private void buttonClicked() {
 		try {
@@ -67,12 +68,11 @@ public class Browser extends JFrame {
 
 	/**
 	 * Creates the GUI, adds action listener, textArea & textField adapts to
-	 * window size.
+	 * window size by using BorderLayout.
 	 */
 	private void createGUI() {
 		setSize(750, 450);
 
-		// BorderLayout so the fields adapt to window size
 		panel = new JPanel();
 		panel.setLayout(new BorderLayout());
 
