@@ -3,8 +3,13 @@ import java.net.UnknownHostException;
 
 import javax.crypto.SecretKey;
 
-public class ChatRunner {
+public class SecureChat {
 
+	/**
+	 * Creates keyGUI and both handlers. Takes in host and port through args[],
+	 * if no arguments are given the default value for port is 2000 and for host
+	 * is localhost.
+	 */
 	public static void main(String[] args) {
 		KeyGUI keyGUI = new KeyGUI();
 		SecurityHandler secH = new SecurityHandler(keyGUI.getKey());

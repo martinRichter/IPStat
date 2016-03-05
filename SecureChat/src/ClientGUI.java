@@ -11,7 +11,7 @@ public class ClientGUI extends JFrame {
 	private Handler handler;
 
 	/**
-	 * Creates GUI, takes in a PrintWriter.
+	 * Creates GUI, takes in a handler.
 	 */
 	public ClientGUI(Handler handler) {
 		createGUI();
@@ -19,7 +19,7 @@ public class ClientGUI extends JFrame {
 	}
 
 	/**
-	 * Retrieves input to TextField & sends handler.
+	 * Retrieves input to TextField & sends to handler.
 	 */
 	private void buttonClicked() {
 		if (textField.getText().length() != 0) {
@@ -34,15 +34,14 @@ public class ClientGUI extends JFrame {
 		textArea.validate();
 	}
 
-	// /** Method for setting windows title */
-	// public void setWindowTitle(String s) {
-	// setTitle(s);
-	// }
-
+	/**
+	 * Creates GUI, uses BorderLayout so the fields adapts to window size. Adds
+	 * actionListener to textField and uses caret to make the textArea go to the
+	 * bottom when new text is displayed.
+	 */
 	private void createGUI() {
 		setSize(300, 300);
 
-		// BorderLayout so the fields adapt to window size
 		panel = new JPanel();
 		panel.setLayout(new BorderLayout());
 
@@ -50,9 +49,6 @@ public class ClientGUI extends JFrame {
 		textArea = new JTextArea();
 		scroll = new JScrollPane(textArea);
 
-		/**
-		 * Action listener that listens for click and calls buttonClicked().
-		 */
 		Action action = new AbstractAction() {
 			public void actionPerformed(ActionEvent e) {
 				buttonClicked();
@@ -62,7 +58,6 @@ public class ClientGUI extends JFrame {
 
 		textArea.setLineWrap(true);
 
-		// To make the textArea go to the bottom
 		DefaultCaret caret = (DefaultCaret) textArea.getCaret();
 		caret.setUpdatePolicy(DefaultCaret.ALWAYS_UPDATE);
 
@@ -70,7 +65,6 @@ public class ClientGUI extends JFrame {
 		panel.add(scroll, BorderLayout.CENTER);
 
 		this.add(panel);
-
 		this.setVisible(true);
 		this.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 	}

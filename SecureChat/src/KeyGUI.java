@@ -20,7 +20,7 @@ public class KeyGUI {
 		return retrieveKey(chooseFile());
 	}
 
-	/** Opens a JFileChoose to select key. Returns file. */
+	/** Opens a JFileChoose to select key file. Returns file. */
 	private File chooseFile() {
 		fileChooser = new JFileChooser();
 		fileChooser.setCurrentDirectory(new File("."));
@@ -34,7 +34,7 @@ public class KeyGUI {
 		}
 	}
 
-	/**Takes in a file and reads it to a key which it returns.*/
+	/**Takes in a file and reads the bytes to a key which it returns.*/
 	private SecretKey retrieveKey(File keyFile) {
 		ByteArrayOutputStream baos = new ByteArrayOutputStream();
 		FileInputStream fin;
