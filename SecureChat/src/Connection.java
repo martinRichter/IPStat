@@ -29,6 +29,7 @@ public class Connection implements Runnable {
 					socket.getOutputStream()), true);
 		} catch (IOException e) {
 			e.printStackTrace();
+			System.exit(0);
 		}
 		t.start();
 	}

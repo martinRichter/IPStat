@@ -47,6 +47,7 @@ public class Handler implements Runnable {
 				GUI.displayInput(str);
 			} catch (IOException e) {
 				e.printStackTrace();
+				System.exit(0);
 			}
 		}
 	}
