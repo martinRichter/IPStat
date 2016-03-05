@@ -73,7 +73,6 @@ public class EncryptHandler {
 		} catch (UnsupportedEncodingException e) {
 			e.printStackTrace();
 		}
-
 		return str;
 	}
 
